@@ -1,0 +1,51 @@
+[project]
+  name = "array-api-typing"
+  dynamic = ["version"]
+  description = "Static typing support for the array API standard"
+  readme = "README.md"
+  requires-python = ">=3.10"
+  license = "MIT"
+  authors = [
+    {name="Consortium for Python Data API Standards", email="data-apis@users.noreply.github.com"},
+    {name="Joren Hammudoglu", email="jhammudoglu@gmail.com"},
+    {name="Nathaniel Starkman", email="nstarman@users.noreply.github.com"}
+  ]
+  classifiers = [
+    "Development Status :: 1 - Planning",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python",
+    "Topic :: Scientific/Engineering",
+    "Typing :: Typed",
+  ]
+  dependencies = []
+
+  [project.urls]
+    Changelog     = "https://github.com/data-apis/array-api-typing/releases"
+    Repository    = "https://github.com/data-apis/array-api-typing"
+
+
+[build-system]
+  requires      = ["hatch-vcs", "hatchling"]
+  build-backend = "hatchling.build"
+
+
+[dependency-groups]
+test = [
+  "pytest>=8.3.3",
+  "pytest-cov >=3",
+  "pytest-github-actions-annotate-failures",
+  "sybil>=8.0.0",
+]
+
+
+[tool.hatch]
+  build.hooks.vcs.version-file = "src/array_api_typing/_version.py"
+  version.source               = "vcs"
