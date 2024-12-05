@@ -6,9 +6,9 @@
   requires-python = ">=3.10"
   license = "MIT"
   authors = [
-    {name="Consortium for Python Data API Standards", email="data-apis@users.noreply.github.com"},
-    {name="Joren Hammudoglu", email="jhammudoglu@gmail.com"},
-    {name="Nathaniel Starkman", email="nstarman@users.noreply.github.com"}
+    { name = "Consortium for Python Data API Standards", email = "data-apis@users.noreply.github.com" },
+    { name = "Joren Hammudoglu", email = "jhammudoglu@gmail.com" },
+    { name = "Nathaniel Starkman", email = "nstarman@users.noreply.github.com" },
   ]
   classifiers = [
     "Development Status :: 1 - Planning",
@@ -28,24 +28,105 @@
   dependencies = []
 
   [project.urls]
-    Changelog     = "https://github.com/data-apis/array-api-typing/releases"
-    Repository    = "https://github.com/data-apis/array-api-typing"
+    Repository = "https://github.com/data-apis/array-api-typing"
+    Changelog = "https://github.com/data-apis/array-api-typing/releases"
 
 
 [build-system]
-  requires      = ["hatch-vcs", "hatchling"]
+  requires = ["hatch-vcs", "hatchling"]
   build-backend = "hatchling.build"
 
 
 [dependency-groups]
-test = [
-  "pytest>=8.3.3",
-  "pytest-cov >=3",
-  "pytest-github-actions-annotate-failures",
-  "sybil>=8.0.0",
-]
+  dev = [
+    "pre-commit>=4.0.1",
+    { include-group = "test" },
+  ]
+  test = [
+    "pytest>=8.3.3",
+    "pytest-cov >=3",
+    "pytest-github-actions-annotate-failures",
+    "sybil>=8.0.0",
+  ]
 
 
 [tool.hatch]
   build.hooks.vcs.version-file = "src/array_api_typing/_version.py"
-  version.source               = "vcs"
+  version.source = "vcs"
+
+
+[tool.coverage]
+  report.exclude_also = ['\.\.\.', 'if typing.TYPE_CHECKING:']
+  run.source = ["array-api-typing"]
+  run.branch = true
+
+
+[tool.mypy]
+  files = ["src", "tests"]
+  python_version = "3.10"
+
+  strict = true
+  disallow_incomplete_defs = true
+  disallow_untyped_defs = true
+  disable_bytearray_promotion = true  # Note(2024-12-05): these are private flags
+  disable_memoryview_promotion = true  # Note(2024-12-05): these are private flags
+  enable_error_code = ["ignore-without-code", "redundant-expr", "truthy-bool"]
+
+  warn_return_any = true
+  warn_unreachable = true
+  warn_unused_configs = true
+
+
+[tool.pytest.ini_options]
+  addopts = [
+    "--showlocals",
+    "--strict-config",
+    "--strict-markers",
+    "-p no:doctest",    # using sybil
+    "-ra",
+  ]
+  filterwarnings = [
+    "error",
+    # Sybil
+    "ignore:Attribute s is deprecated and will be removed in Python 3\\.14:DeprecationWarning",
+    "ignore:ast\\.Str is deprecated and will be removed in Python 3\\.14:DeprecationWarning",
+  ]
+  log_cli_level = "INFO"
+  minversion = "8.3"
+  testpaths = ["README.md", "src/", "docs", "tests/"]
+  norecursedirs = ["docs/_build"]
+  xfail_strict = true
+
+
+[tool.ruff]
+  preview = true
+  force-exclude = true
+
+  [tool.ruff.lint]
+    extend-select = ["ALL"]
+    ignore = [
+      "COM812", # Conflicts with formatter
+      "CPY",    # Missing copyright notice at top of file (NOTE revisit when autofixable)
+      "D105",   # Missing docstring in magic method
+      "D107",   # Missing docstring in __init__
+      "D203",   # 1 blank line required before class docstring
+      "D213",   # Multi-line docstring summary should start at the second line
+      "FBT",    # flake8-boolean-trap
+      "FIX",    # flake8-fixme
+      "ISC001", # Conflicts with formatter
+    ]
+
+    [tool.ruff.lint.flake8-import-conventions]
+      banned-from = ["array_api_typing"]
+
+      [tool.ruff.lint.flake8-import-conventions.extend-aliases]
+        array_api_typing = "xpt"
+
+    [tool.ruff.lint.isort]
+      combine-as-imports = true
+      extra-standard-library = ["typing_extensions"]
+      known-local-folder = ["array_api_typing"]
+
+  [tool.ruff.format]
+    docstring-code-format = true
+    line-ending = "lf"
