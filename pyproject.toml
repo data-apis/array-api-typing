@@ -8,8 +8,10 @@ version = "0.0.0"
 description = "Static typing support for the array API standard"
 readme = "README.md"
 license = { text = "MIT" }
-authors = [
+authors = [    
   { name = "Consortium for Python Data API Standards", email = "data-apis@users.noreply.github.com" },
+    { name = "Joren Hammudoglu", email = "jhammudoglu@gmail.com" },
+    { name = "Nathaniel Starkman", email = "nstarman@users.noreply.github.com" },
 ]
 requires-python = ">=3.9"
 classifiers = [
@@ -23,6 +25,8 @@ classifiers = [
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
   "Topic :: Software Development :: Libraries",
+    "Topic :: Scientific/Engineering",
+    "Typing :: Typed",
 ]
 
 dependencies = [
