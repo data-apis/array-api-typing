@@ -34,7 +34,9 @@ wheels = [
 name = "array-api-typing"
 version = "0.0.0"
 source = { editable = "." }
-dependencies = [
+
+[package.optional-dependencies]
+cli = [
     { name = "rich" },
     { name = "typer" },
 ]
@@ -53,9 +55,10 @@ docs = [
 
 [package.metadata]
 requires-dist = [
-    { name = "rich", specifier = ">=10" },
-    { name = "typer", specifier = ">=0.15,<1" },
+    { name = "rich", marker = "extra == 'cli'", specifier = ">=14.0.0" },
+    { name = "typer", marker = "extra == 'cli'", specifier = ">=0.16.0" },
 ]
+provides-extras = ["cli"]
 
 [package.metadata.requires-dev]
 dev = [

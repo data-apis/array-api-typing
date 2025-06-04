@@ -29,15 +29,20 @@ classifiers = [
     "Typing :: Typed",
 ]
 
-dependencies = [
-  "rich>=10",
-  "typer>=0.15,<1",
-]
+dependencies = []
 urls."Bug Tracker" = "https://github.com/data-apis/array-api-typing/issues"
 urls.Changelog = "https://github.com/data-apis/array-api-typing/blob/main/CHANGELOG.md"
 urls.documentation = "https://array-api-typing.readthedocs.io"
 urls.repository = "https://github.com/data-apis/array-api-typing"
 scripts.array-api-typing = "array_api_typing.cli:app"
+
+[project.optional-dependencies]
+cli = [
+    "rich>=14.0.0",
+    "typer>=0.16.0",
+]
+
+
 
 [dependency-groups]
 dev = [
