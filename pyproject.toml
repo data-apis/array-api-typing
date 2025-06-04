@@ -8,10 +8,10 @@ version = "0.0.0"
 description = "Static typing support for the array API standard"
 readme = "README.md"
 license = { text = "MIT" }
-authors = [    
+authors = [
   { name = "Consortium for Python Data API Standards", email = "data-apis@users.noreply.github.com" },
-    { name = "Joren Hammudoglu", email = "jhammudoglu@gmail.com" },
-    { name = "Nathaniel Starkman", email = "nstarman@users.noreply.github.com" },
+  { name = "Joren Hammudoglu", email = "jhammudoglu@gmail.com" },
+  { name = "Nathaniel Starkman", email = "nstarman@users.noreply.github.com" },
 ]
 requires-python = ">=3.9"
 classifiers = [
@@ -19,30 +19,27 @@ classifiers = [
   "Intended Audience :: Developers",
   "Natural Language :: English",
   "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3 :: Only",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
+  "Topic :: Scientific/Engineering",
   "Topic :: Software Development :: Libraries",
-    "Topic :: Scientific/Engineering",
-    "Typing :: Typed",
+  "Typing :: Typed",
 ]
 
-dependencies = []
+dependencies = [  ]
+optional-dependencies.cli = [
+  "rich>=14",
+  "typer>=0.16",
+]
 urls."Bug Tracker" = "https://github.com/data-apis/array-api-typing/issues"
 urls.Changelog = "https://github.com/data-apis/array-api-typing/blob/main/CHANGELOG.md"
 urls.documentation = "https://array-api-typing.readthedocs.io"
 urls.repository = "https://github.com/data-apis/array-api-typing"
 scripts.array-api-typing = "array_api_typing.cli:app"
-
-[project.optional-dependencies]
-cli = [
-    "rich>=14.0.0",
-    "typer>=0.16.0",
-]
-
-
 
 [dependency-groups]
 dev = [
@@ -60,22 +57,22 @@ docs = [
 line-length = 88
 lint.select = [
   "B",   # flake8-bugbear
-  "D",   # flake8-docstrings
   "C4",  # flake8-comprehensions
-  "S",   # flake8-bandit
-  "F",   # pyflake
+  "D",   # flake8-docstrings
   "E",   # pycodestyle
-  "W",   # pycodestyle
-  "UP",  # pyupgrade
+  "F",   # pyflake
   "I",   # isort
   "RUF", # ruff specific
+  "S",   # flake8-bandit
+  "UP",  # pyupgrade
+  "W",   # pycodestyle
 ]
 lint.ignore = [
-  "D203", # 1 blank line required before class docstring
-  "D212", # Multi-line docstring summary should start at the first line
   "D100", # Missing docstring in public module
   "D104", # Missing docstring in public package
   "D107", # Missing docstring in `__init__`
+  "D203", # 1 blank line required before class docstring
+  "D212", # Multi-line docstring summary should start at the first line
   "D401", # First line of docstring should be in imperative mood
 ]
 lint.per-file-ignores."conftest.py" = [ "D100" ]
@@ -158,7 +155,7 @@ exclude_commit_patterns = [
   '''test(?:\([^)]*?\))?: .+''',
   '''build\((?!deps\): .+)''',
   '''Merged? .*''',
-  '''Initial [Cc]ommit.*''', # codespell:ignore
+  '''Initial [Cc]ommit.*''',         # codespell:ignore
 ]
 
 [tool.semantic_release.changelog.environment]
