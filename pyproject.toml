@@ -1,132 +1,163 @@
-[project]
-  name = "array-api-typing"
-  dynamic = ["version"]
-  description = "Static typing support for the array API standard"
-  readme = "README.md"
-  requires-python = ">=3.10"
-  license = "MIT"
-  authors = [
-    { name = "Consortium for Python Data API Standards", email = "data-apis@users.noreply.github.com" },
-    { name = "Joren Hammudoglu", email = "jhammudoglu@gmail.com" },
-    { name = "Nathaniel Starkman", email = "nstarman@users.noreply.github.com" },
-  ]
-  classifiers = [
-    "Development Status :: 1 - Planning",
-    "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
-    "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
-    "Programming Language :: Python",
-    "Topic :: Scientific/Engineering",
-    "Typing :: Typed",
-  ]
-  dependencies = []
-
-  [project.urls]
-    Repository = "https://github.com/data-apis/array-api-typing"
-    Changelog = "https://github.com/data-apis/array-api-typing/releases"
-
-
 [build-system]
-  requires = ["hatch-vcs", "hatchling"]
-  build-backend = "hatchling.build"
+build-backend = "setuptools.build_meta"
+requires = [ "setuptools" ]
 
+[project]
+name = "array-api-typing"
+version = "0.0.0"
+description = "Static typing support for the array API standard"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [
+  { name = "Consortium for Python Data API Standards", email = "data-apis@users.noreply.github.com" },
+]
+requires-python = ">=3.9"
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha",
+  "Intended Audience :: Developers",
+  "Natural Language :: English",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Software Development :: Libraries",
+]
+
+dependencies = [
+  "rich>=10",
+  "typer>=0.15,<1",
+]
+urls."Bug Tracker" = "https://github.com/data-apis/array-api-typing/issues"
+urls.Changelog = "https://github.com/data-apis/array-api-typing/blob/main/CHANGELOG.md"
+urls.documentation = "https://array-api-typing.readthedocs.io"
+urls.repository = "https://github.com/data-apis/array-api-typing"
+scripts.array-api-typing = "array_api_typing.cli:app"
 
 [dependency-groups]
-  dev = [
-    "pre-commit>=4.0.1",
-    { include-group = "test" },
-  ]
-  test = [
-    "pytest>=8.3.3",
-    "pytest-cov >=3",
-    "pytest-github-actions-annotate-failures",
-    "sybil>=8.0.0",
-  ]
-
-
-[tool.hatch]
-  build.hooks.vcs.version-file = "src/array_api_typing/_version.py"
-  version.source = "vcs"
-
-
-[tool.coverage]
-  report.exclude_also = ['\.\.\.', 'if typing.TYPE_CHECKING:']
-  run.source = ["array-api-typing"]
-  run.branch = true
-
-
-[tool.mypy]
-  files = ["src", "tests"]
-  python_version = "3.10"
-
-  strict = true
-  disallow_incomplete_defs = true
-  disallow_untyped_defs = true
-  disable_bytearray_promotion = true  # Note(2024-12-05): these are private flags
-  disable_memoryview_promotion = true  # Note(2024-12-05): these are private flags
-  enable_error_code = ["ignore-without-code", "redundant-expr", "truthy-bool"]
-
-  warn_return_any = true
-  warn_unreachable = true
-  warn_unused_configs = true
-
-
-[tool.pytest.ini_options]
-  addopts = [
-    "--showlocals",
-    "--strict-config",
-    "--strict-markers",
-    "-p no:doctest",    # using sybil
-    "-ra",
-  ]
-  filterwarnings = [
-    "error",
-    # Sybil
-    "ignore:Attribute s is deprecated and will be removed in Python 3\\.14:DeprecationWarning",
-    "ignore:ast\\.Str is deprecated and will be removed in Python 3\\.14:DeprecationWarning",
-  ]
-  log_cli_level = "INFO"
-  minversion = "8.3"
-  testpaths = ["README.md", "src/", "docs", "tests/"]
-  norecursedirs = ["docs/_build"]
-  xfail_strict = true
-
+dev = [
+  "pytest>=8,<9",
+  "pytest-cov>=6,<7",
+]
+docs = [
+  "furo>=2023.5.20; python_version>='3.11'",
+  "myst-parser>=0.16; python_version>='3.11'",
+  "sphinx>=4; python_version>='3.11'",
+  "sphinx-autobuild>=2024,<2025; python_version>='3.11'",
+]
 
 [tool.ruff]
-  preview = true
-  force-exclude = true
+line-length = 88
+lint.select = [
+  "B",   # flake8-bugbear
+  "D",   # flake8-docstrings
+  "C4",  # flake8-comprehensions
+  "S",   # flake8-bandit
+  "F",   # pyflake
+  "E",   # pycodestyle
+  "W",   # pycodestyle
+  "UP",  # pyupgrade
+  "I",   # isort
+  "RUF", # ruff specific
+]
+lint.ignore = [
+  "D203", # 1 blank line required before class docstring
+  "D212", # Multi-line docstring summary should start at the first line
+  "D100", # Missing docstring in public module
+  "D104", # Missing docstring in public package
+  "D107", # Missing docstring in `__init__`
+  "D401", # First line of docstring should be in imperative mood
+]
+lint.per-file-ignores."conftest.py" = [ "D100" ]
+lint.per-file-ignores."docs/conf.py" = [ "D100" ]
+lint.per-file-ignores."setup.py" = [ "D100" ]
+lint.per-file-ignores."tests/**/*" = [
+  "D100",
+  "D101",
+  "D102",
+  "D103",
+  "D104",
+  "S101",
+]
+lint.isort.known-first-party = [ "array_api_typing", "tests" ]
 
-  [tool.ruff.lint]
-    extend-select = ["ALL"]
-    ignore = [
-      "COM812", # Conflicts with formatter
-      "CPY",    # Missing copyright notice at top of file (NOTE revisit when autofixable)
-      "D105",   # Missing docstring in magic method
-      "D107",   # Missing docstring in __init__
-      "D203",   # 1 blank line required before class docstring
-      "D213",   # Multi-line docstring summary should start at the second line
-      "FBT",    # flake8-boolean-trap
-      "FIX",    # flake8-fixme
-      "ISC001", # Conflicts with formatter
-    ]
+[tool.pytest.ini_options]
+addopts = """\
+    -v
+    -Wdefault
+    --cov=array_api_typing
+    --cov-report=term
+    --cov-report=xml
+    """
+pythonpath = [ "src" ]
 
-    [tool.ruff.lint.flake8-import-conventions]
-      banned-from = ["array_api_typing"]
+[tool.coverage.run]
+branch = true
 
-      [tool.ruff.lint.flake8-import-conventions.extend-aliases]
-        array_api_typing = "xpt"
+[tool.coverage.report]
+exclude_lines = [
+  "pragma: no cover",
+  "@overload",
+  "if TYPE_CHECKING",
+  "raise NotImplementedError",
+  'if __name__ == "__main__":',
+]
 
-    [tool.ruff.lint.isort]
-      combine-as-imports = true
-      extra-standard-library = ["typing_extensions"]
-      known-local-folder = ["array_api_typing"]
+[tool.mypy]
+check_untyped_defs = true
+disallow_any_generics = true
+disallow_incomplete_defs = true
+disallow_untyped_defs = true
+mypy_path = "src/"
+no_implicit_optional = true
+show_error_codes = true
+warn_unreachable = true
+warn_unused_ignores = true
+exclude = [
+  'docs/.*',
+  'setup.py',
+]
 
-  [tool.ruff.format]
-    docstring-code-format = true
-    line-ending = "lf"
+[[tool.mypy.overrides]]
+module = "tests.*"
+allow_untyped_defs = true
+
+[[tool.mypy.overrides]]
+module = "docs.*"
+ignore_errors = true
+
+[tool.semantic_release]
+version_toml = [ "pyproject.toml:project.version" ]
+version_variables = [
+  "src/array_api_typing/__init__.py:__version__",
+  "docs/conf.py:release",
+]
+build_command = """
+pip install uv
+uv lock
+git add uv.lock
+uv build
+"""
+
+[tool.semantic_release.changelog]
+exclude_commit_patterns = [
+  '''chore(?:\([^)]*?\))?: .+''',
+  '''ci(?:\([^)]*?\))?: .+''',
+  '''refactor(?:\([^)]*?\))?: .+''',
+  '''style(?:\([^)]*?\))?: .+''',
+  '''test(?:\([^)]*?\))?: .+''',
+  '''build\((?!deps\): .+)''',
+  '''Merged? .*''',
+  '''Initial [Cc]ommit.*''', # codespell:ignore
+]
+
+[tool.semantic_release.changelog.environment]
+keep_trailing_newline = true
+
+[tool.semantic_release.branches.main]
+match = "main"
+
+[tool.semantic_release.branches.noop]
+match = "(?!main$)"
+prerelease = true

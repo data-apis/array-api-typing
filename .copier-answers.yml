@@ -1,0 +1,21 @@
+# Changes here will be overwritten by Copier
+_commit: 2e4f7d0
+_src_path: gh:34j/pypackage-template
+cli_name: array-api-typing
+copyright_year: '2025'
+documentation: true
+email: data-apis@users.noreply.github.com
+full_name: Consortium for Python Data API Standards
+github_username: data-apis
+has_cli: true
+initial_commit: false
+is_django_package: false
+open_source_license: MIT
+open_with_editor: false
+package_name: array_api_typing
+project_name: Python array API standard typing
+project_short_description: Static typing support for the array API standard
+project_slug: array-api-typing
+run_uv_sync: true
+setup_pre_commit: false
+
