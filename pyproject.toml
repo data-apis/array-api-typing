@@ -89,14 +89,28 @@ lint.per-file-ignores."tests/**/*" = [
 lint.isort.known-first-party = [ "array_api_typing", "tests" ]
 
 [tool.pytest.ini_options]
-addopts = """\
-    -v
-    -Wdefault
-    --cov=array_api_typing
-    --cov-report=term
-    --cov-report=xml
-    """
+addopts = [
+  "-v",
+  "-Wdefault",
+  "--cov=array_api_typing",
+  "--cov-report=term",
+  "--cov-report=xml",
+  "--showlocals",
+  "--strict-config",
+  "--strict-markers",
+  "-p no:doctest",          # using sybil
+  "-ra",
+]
 pythonpath = [ "src" ]
+filterwarnings = [
+  "error",
+  # Sybil
+  "ignore:Attribute s is deprecated and will be removed in Python 3\\.14:DeprecationWarning",
+  "ignore:ast\\.Str is deprecated and will be removed in Python 3\\.14:DeprecationWarning",
+]
+log_cli_level = "INFO"
+minversion = "8.3"
+xfail_strict = true
 
 [tool.coverage.run]
 branch = true
