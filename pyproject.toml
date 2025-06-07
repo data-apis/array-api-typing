@@ -39,7 +39,6 @@
 
 [dependency-groups]
   dev = [
-    "pre-commit>=4.0.1",
     { include-group = "test" },
     "lefthook>=1.11.13",
 ]
