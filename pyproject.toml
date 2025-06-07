@@ -25,7 +25,9 @@
     "Topic :: Scientific/Engineering",
     "Typing :: Typed",
   ]
-  dependencies = []
+  dependencies = [
+    "typing-extensions>=4.14.0",
+  ]
 
   [project.urls]
     Repository = "https://github.com/data-apis/array-api-typing"
