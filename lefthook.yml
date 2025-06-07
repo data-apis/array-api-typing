@@ -1,0 +1,16 @@
+#   Refer for explanation to following link:
+#   https://lefthook.dev/configuration/
+#
+
+pre-commit:
+  parallel: true
+  jobs:
+    - name: ruff-fix
+      glob: "*.py"
+      run: uv run ruff check --fix {staged_files}
+    - name: ruff-format
+      glob: "*.py"
+      run: uv run ruff format {staged_files}
+    - name: mypy
+      glob: "*.py"
+      run: uv run mypy {staged_files}
