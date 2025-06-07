@@ -85,6 +85,10 @@ version_tuple = {version_tuple!r}
   warn_unreachable = true
   warn_unused_configs = true
 
+  [[tool.mypy.overrides]]
+    module = "sybil.*"
+    ignore_missing_imports = true
+
 
 [tool.pytest.ini_options]
   addopts = [
