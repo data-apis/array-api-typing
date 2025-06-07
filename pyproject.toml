@@ -51,6 +51,9 @@
     "pytest-github-actions-annotate-failures>=0.3.0",
     "sybil>=8.0.0",
   ]
+  mypy = [
+    "mypy>=1.13.0"
+  ]
 
 
 [tool.hatch]
@@ -74,6 +77,7 @@ version_tuple = {version_tuple!r}
 [tool.mypy]
   files = ["src", "tests"]
   python_version = "3.10"
+  mypy_path = "src"
 
   strict = true
   disallow_incomplete_defs = true
@@ -89,6 +93,10 @@ version_tuple = {version_tuple!r}
   [[tool.mypy.overrides]]
     module = "sybil.*"
     ignore_missing_imports = true
+
+  [[tool.mypy.overrides]]
+    module = "tests.*"
+    disallow_untyped_defs = false
 
 
 [tool.pytest.ini_options]
@@ -129,6 +137,9 @@ version_tuple = {version_tuple!r}
       "FIX",    # flake8-fixme
       "ISC001", # Conflicts with formatter
     ]
+
+    [tool.ruff.lint.per-file-ignores]
+      "tests/*.py" = ["ANN201", "S101"]
 
     [tool.ruff.lint.flake8-import-conventions]
       banned-from = ["array_api_typing"]
