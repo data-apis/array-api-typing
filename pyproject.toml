@@ -41,7 +41,8 @@
   dev = [
     "pre-commit>=4.0.1",
     { include-group = "test" },
-  ]
+    "lefthook>=1.11.13",
+]
   test = [
     "pytest>=8.3.3",
     "pytest-cov>=3",
