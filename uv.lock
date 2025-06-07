@@ -37,14 +37,14 @@ requires-dist = [{ name = "typing-extensions", specifier = ">=4.14.0" }]
 [package.metadata.requires-dev]
 dev = [
     { name = "lefthook", specifier = ">=1.11.13" },
-    { name = "numpy", specifier = ">=1.24" },
+    { name = "numpy", specifier = ">=1.25" },
     { name = "pytest", specifier = ">=8.3.3" },
     { name = "pytest-cov", specifier = ">=3" },
     { name = "pytest-github-actions-annotate-failures", specifier = ">=0.3.0" },
     { name = "sybil", specifier = ">=8.0.0" },
 ]
 test = [
-    { name = "numpy", specifier = ">=1.24" },
+    { name = "numpy", specifier = ">=1.25" },
     { name = "pytest", specifier = ">=8.3.3" },
     { name = "pytest-cov", specifier = ">=3" },
     { name = "pytest-github-actions-annotate-failures", specifier = ">=0.3.0" },

@@ -1,6 +1,6 @@
 """Static typing support for the array API standard."""
 
-__all__ = ["HasNamespace"]
+__all__ = ["HasArrayNamespace"]
 
 from types import ModuleType
 from typing import Protocol, final
@@ -10,10 +10,8 @@ T = TypeVar("T", bound=object, default=ModuleType)  # PEP 696 default
 
 
 @final
-class HasNamespace(Protocol[T]):  # type: ignore[misc]  # see python/mypy#17288
+class HasArrayNamespace(Protocol[T]):  # type: ignore[misc]  # see python/mypy#17288
     """Protocol for classes that have an `__array_namespace__` method.
-
-    This is for type-annotating objects that should
 
     Example:
     >>> import array_api_typing as xpt
@@ -23,9 +21,9 @@ class HasNamespace(Protocol[T]):  # type: ignore[misc]  # see python/mypy#17288
     ...         return object()
     >>>
     >>> x = MyArray()
-    >>> def has_namespace(x: xpt.HasNamespace) -> bool:
+    >>> def has_array_namespace(x: xpt.HasArrayNamespace) -> bool:
     ...     return hasattr(x, "__array_namespace__")
-    >>> has_namespace(x)
+    >>> has_array_namespace(x)
     True
 
     """
