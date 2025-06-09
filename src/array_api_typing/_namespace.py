@@ -1,6 +1,4 @@
-"""Static typing support for the array API standard."""
-
-__all__ = ["HasArrayNamespace"]
+__all__ = ("HasArrayNamespace",)
 
 from types import ModuleType
 from typing import Protocol, final
