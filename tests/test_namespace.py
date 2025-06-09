@@ -1,5 +1,3 @@
-"""Tests for the HasArrayNamespace protocol."""
-
 from types import SimpleNamespace
 from typing import Protocol, runtime_checkable
 

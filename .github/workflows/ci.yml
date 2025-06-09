@@ -1,15 +1,11 @@
 name: CI
-
-permissions:
-  contents: read
-  packages: read
+permissions: read-all
 
 on:
   workflow_dispatch:
   pull_request:
   push:
-    branches:
-      - main
+    branches: [main]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -29,20 +25,12 @@ jobs:
 
       - name: Install uv
         uses: astral-sh/setup-uv@v6
-        with:
-          enable-cache: true
-          cache-dependency-glob: "uv.lock"
-
-      - name: "Set up Python"
-        uses: actions/setup-python@v5
-        with:
-          python-version-file: ".python-version"
 
       - name: Install the project
-        run: uv sync --group test
+        run: uv sync --locked --group test
 
       - name: Run lefthook hooks
-        run: uv run lefthook run
+        run: uv run --frozen lefthook run pre-commit
 
   checks:
     name: Check Python ${{ matrix.python-version }} on ${{ matrix.runs-on }}
@@ -54,30 +42,22 @@ jobs:
         python-version: ["3.11", "3.12", "3.13"]
         runs-on: [ubuntu-latest, macos-latest, windows-latest]
 
-        # TODO: check when pypy3.11 is available
-        # include:
-        #   - python-version: pypy-3.11
-        #     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
 
       - name: Install uv
         uses: astral-sh/setup-uv@v6
         with:
-          enable-cache: true
-          cache-dependency-glob: "uv.lock"
-
-      - name: Set up Python ${{ matrix.python-version }}
-        run: uv python install ${{ matrix.python-version }}
+          python-version: ${{ matrix.python-version }}
 
       - name: Install the project
-        run: uv sync --group test
+        run: uv sync --locked --group test
 
       - name: Test package
         run: >-
-          uv run pytest src docs tests -ra --cov --cov-report=xml
-          --cov-report=term --durations=20
+          uv run --frozen pytest
+          --cov --cov-report=xml --cov-report=term --durations=20
+          src docs tests 
 
       - name: Upload coverage report
         uses: codecov/codecov-action@v5.4.3
@@ -100,19 +80,15 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v6
         with:
-          enable-cache: true
-          cache-dependency-glob: "uv.lock"
-
-      - name: Set up Python ${{ matrix.python-version }}
-        run: uv python install ${{ matrix.python-version }}
-
+          python-version: ${{ matrix.python-version }}
       - name: Install the project
-        run: uv sync --extra all --group test-all --resolution lowest-direct
+        run: uv sync --locked --group test --resolution lowest-direct
 
       - name: Test package
         run: >-
-          uv run pytest src docs tests -ra --cov --cov-report=xml
-          --cov-report=term --durations=20 --mpl
+          uv run --frozen pytest
+          --cov --cov-report=xml --cov-report=term --durations=20
+          src docs tests
 
       - name: Upload coverage report
         uses: codecov/codecov-action@v5.4.3

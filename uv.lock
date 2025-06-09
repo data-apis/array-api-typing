@@ -46,7 +46,7 @@ dev = [
     { name = "pytest-github-actions-annotate-failures", specifier = ">=0.3.0" },
     { name = "sybil", specifier = ">=8.0.0" },
 ]
-mypy = [{ name = "mypy", specifier = ">=1.13.0" }]
+mypy = [{ name = "mypy", specifier = ">=1.16.0" }]
 test = [
     { name = "numpy", specifier = ">=1.25" },
     { name = "pytest", specifier = ">=8.3.3" },
