@@ -22,3 +22,6 @@ venv/
 
 # Build docs
 /src/array_api_typing/_version.py
+
+# Mac files
+.DS_Store

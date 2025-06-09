@@ -25,7 +25,9 @@
     "Topic :: Scientific/Engineering",
     "Typing :: Typed",
   ]
-  dependencies = []
+  dependencies = [
+    "typing-extensions>=4.14.0",
+  ]
 
   [project.urls]
     Repository = "https://github.com/data-apis/array-api-typing"
@@ -41,8 +43,9 @@
   dev = [
     { include-group = "test" },
     "lefthook>=1.11.13",
-]
+  ]
   test = [
+    "numpy>=1.25",
     "pytest>=8.3.3",
     "pytest-cov>=3",
     "pytest-github-actions-annotate-failures>=0.3.0",
@@ -82,6 +85,10 @@ version_tuple = {version_tuple!r}
   warn_return_any = true
   warn_unreachable = true
   warn_unused_configs = true
+
+  [[tool.mypy.overrides]]
+    module = "sybil.*"
+    ignore_missing_imports = true
 
 
 [tool.pytest.ini_options]
