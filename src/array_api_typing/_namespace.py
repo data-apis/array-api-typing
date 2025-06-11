@@ -11,7 +11,7 @@ from ._simple import NestedSequence, SupportsBufferProtocol
 A = TypeVar("A", bound=Array, default=Array)  # PEP 696 default
 
 
-class Namespace(Protocol[A]):
+class ArrayNamespace(Protocol[A]):
     """An Array API namespace."""
 
     def asarray(
