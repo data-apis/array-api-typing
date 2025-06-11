@@ -1,8 +1,9 @@
 """Static typing support for the array API standard."""
 
-from typing import Protocol, final
+from typing import Protocol
+
+from ._namespace import HasArrayNamespace
 
 
-@final
 class Array(HasArrayNamespace, Protocol):
     pass

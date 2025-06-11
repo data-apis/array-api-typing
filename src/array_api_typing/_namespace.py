@@ -1,6 +1,6 @@
 """Static typing support for the array API standard."""
 
-from typing import Protocol, final
+from typing import Protocol
 from typing_extensions import TypeVar
 
 from ._array import Array
@@ -41,10 +41,9 @@ class ArrayNamespace(Protocol[A]):
     ) -> A: ...
 
 
-T = TypeVar("T", bound=Namespace, default=Namespace)  # PEP 696 default
+T = TypeVar("T", bound=ArrayNamespace, default=ArrayNamespace)  # PEP 696 default
 
 
-@final
 class HasArrayNamespace(Protocol[T]):  # type: ignore[misc]  # see python/mypy#17288
     """Protocol for classes that have an `__array_namespace__` method.
 

@@ -1,5 +1,7 @@
 """Static typing support for the array API standard."""
 
+from __future__ import annotations
+
 from typing import Any, Protocol, TypeAlias, TypeVar
 
 _T_co = TypeVar("_T_co", covariant=True)
