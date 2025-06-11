@@ -1,12 +1,47 @@
 """Static typing support for the array API standard."""
 
-__all__ = ["HasArrayNamespace"]
-
-from types import ModuleType
 from typing import Protocol, final
 from typing_extensions import TypeVar
 
-T = TypeVar("T", bound=object, default=ModuleType)  # PEP 696 default
+from ._array import Array
+from ._device import Device
+from ._dtype import DType
+from ._simple import NestedSequence, SupportsBufferProtocol
+
+A = TypeVar("A", bound=Array, default=Array)  # PEP 696 default
+
+
+class Namespace(Protocol[A]):
+    """An Array API namespace."""
+
+    def asarray(
+        self,
+        obj: (
+            Array
+            | complex
+            | NestedSequence[bool | int | float | complex]
+            | SupportsBufferProtocol
+        ),
+        /,
+        *,
+        dtype: DType | None = None,
+        device: Device | None = None,
+        copy: bool | None = None,
+        **kwargs: object,
+    ) -> A: ...
+
+    def astype(
+        self,
+        x: A,
+        dtype: DType,
+        /,
+        *,
+        copy: bool = True,
+        device: Device | None = None,
+    ) -> A: ...
+
+
+T = TypeVar("T", bound=Namespace, default=Namespace)  # PEP 696 default
 
 
 @final
