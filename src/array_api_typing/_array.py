@@ -4,5 +4,5 @@ from typing import Protocol, final
 
 
 @final
-class Array(Protocol):
+class Array(HasArrayNamespace, Protocol):
     pass
