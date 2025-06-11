@@ -16,12 +16,7 @@ class ArrayNamespace(Protocol[A]):
 
     def asarray(
         self,
-        obj: (
-            Array
-            | complex
-            | NestedSequence[bool | int | float | complex]
-            | SupportsBufferProtocol
-        ),
+        obj: Array | complex | NestedSequence[complex] | SupportsBufferProtocol,
         /,
         *,
         dtype: DType | None = None,

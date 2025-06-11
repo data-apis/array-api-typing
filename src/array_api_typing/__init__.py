@@ -6,6 +6,8 @@ __all__ = [
     "DType",
     "Device",
     "HasArrayNamespace",
+    "NestedSequence",
+    "SupportsBufferProtocol",
     "__version__",
     "__version_tuple__",
 ]
@@ -14,4 +16,5 @@ from ._array import Array
 from ._device import Device
 from ._dtype import DType
 from ._namespace import ArrayNamespace, HasArrayNamespace
+from ._simple import NestedSequence, SupportsBufferProtocol
 from ._version import version as __version__, version_tuple as __version_tuple__
