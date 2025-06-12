@@ -1,14 +1,19 @@
 """Static typing support for the array API standard."""
 
-from typing import Protocol
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Protocol
 from typing_extensions import TypeVar
 
-from ._array import Array
-from ._device import Device
-from ._dtype import DType
-from .signature_types import NestedSequence, SupportsBufferProtocol
+if TYPE_CHECKING:
+    from ._array import Array
+    from ._device import Device
+    from ._dtype import DType
+    from .signature_types import NestedSequence, SupportsBufferProtocol
 
-A = TypeVar("A", bound=Array, default=Array)  # PEP 696 default
+    A = TypeVar("A", bound=Array, default=Array)  # PEP 696 default
+else:
+    A = TypeVar("A")
 
 
 class ArrayNamespace(Protocol[A]):
