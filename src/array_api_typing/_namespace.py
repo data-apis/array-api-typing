@@ -11,7 +11,7 @@ if TYPE_CHECKING:
     # type-checking. The type variable depends on Array, so we create a dummy type
     # variable without the same bounds and default for this case.  In Python 3.13, this
     # is no longer be necessary.
-    from collections.abc import Buffer
+    from typing_extensions import Buffer
 
     from ._array import Array
     from ._misc_objects import Device, DType
