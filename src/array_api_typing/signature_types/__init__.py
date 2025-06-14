@@ -2,7 +2,6 @@
 
 __all__ = [
     "NestedSequence",
-    "SupportsBufferProtocol",
 ]
 
-from ._signature_types import NestedSequence, SupportsBufferProtocol
+from ._signature_types import NestedSequence

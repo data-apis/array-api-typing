@@ -1,4 +1,4 @@
-"""Static typing support for the array API standard."""
+"""Static typing support for array API namespaces."""
 
 from __future__ import annotations
 
@@ -6,10 +6,16 @@ from typing import TYPE_CHECKING, Protocol
 from typing_extensions import TypeVar
 
 if TYPE_CHECKING:
+    # This condition exists to prevent a circular import: _array imports _namespace for
+    # HasArrayNamespace. Therefore, _namespace cannot import _array except when
+    # type-checking. The type variable depends on Array, so we create a dummy type
+    # variable without the same bounds and default for this case.  In Python 3.13, this
+    # is no longer be necessary.
+    from collections.abc import Buffer
+
     from ._array import Array
-    from ._device import Device
-    from ._dtype import DType
-    from .signature_types import NestedSequence, SupportsBufferProtocol
+    from ._misc_objects import Device, DType
+    from .signature_types import NestedSequence
 
     A = TypeVar("A", bound=Array, default=Array)  # PEP 696 default
 else:
@@ -21,13 +27,12 @@ class ArrayNamespace(Protocol[A]):
 
     def asarray(
         self,
-        obj: Array | complex | NestedSequence[complex] | SupportsBufferProtocol,
+        obj: Array | complex | NestedSequence[complex] | Buffer,
         /,
         *,
         dtype: DType | None = None,
         device: Device | None = None,
         copy: bool | None = None,
-        **kwargs: object,
     ) -> A: ...
 
     def astype(
