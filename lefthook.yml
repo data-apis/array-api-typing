@@ -13,4 +13,4 @@ pre-commit:
       run: uv run ruff format {staged_files}
     - name: mypy
       glob: "*.py"
-      run: uv run mypy {staged_files}
+      run: uv run --group mypy mypy {staged_files}
