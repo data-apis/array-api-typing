@@ -46,8 +46,8 @@
   ]
   test = [
     "numpy>=1.25",
-    "pytest>=8.3.3",
-    "pytest-cov>=3",
+    "pytest==8.3.3",
+    "pytest-cov>=6",
     "pytest-github-actions-annotate-failures>=0.3.0",
     "sybil>=8.0.0",
   ]
