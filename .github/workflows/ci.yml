@@ -82,7 +82,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install the project
-        run: uv sync --locked --group test --resolution lowest-direct
+        run: uv sync --group test --resolution lowest-direct
 
       - name: Test package
         run: >-
