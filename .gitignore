@@ -25,3 +25,6 @@ venv/
 
 # Mac files
 .DS_Store
+
+# Coverage
+.coverage
