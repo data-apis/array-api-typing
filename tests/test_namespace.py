@@ -5,8 +5,11 @@ import array_api_typing as xpt
 
 
 @runtime_checkable
-class CheckableHasArrayNamespace(xpt.HasArrayNamespace, Protocol):  # type: ignore[misc]
-    """Runtime checkable version of HasArrayNamespace."""
+class CheckableHasArrayNamespace(xpt.HasArrayNamespace, Protocol):
+    """A runtime-checkable version of the HasArrayNamespace protocol."""
+
+    # This class is used to ensure that the protocol can be checked at runtime.
+    # It inherits from xpt.HasArrayNamespace and is marked as runtime_checkable.
 
 
 class GoodArray:

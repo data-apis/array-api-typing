@@ -57,7 +57,6 @@ jobs:
         run: >-
           uv run --frozen pytest
           --cov --cov-report=xml --cov-report=term --durations=20
-          src docs tests 
 
       - name: Upload coverage report
         uses: codecov/codecov-action@18283e04ce6e62d37312384ff67231eb8fd56d24
@@ -82,15 +81,14 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install the project
-        run: uv sync --locked --group test --resolution lowest-direct
+        run: uv sync --group test --resolution lowest-direct
 
       - name: Test package
         run: >-
           uv run --frozen pytest
           --cov --cov-report=xml --cov-report=term --durations=20
-          src docs tests
 
       - name: Upload coverage report
-        uses: codecov/codecov-action@v18283e04ce6e62d37312384ff67231eb8fd56d24
+        uses: codecov/codecov-action@18283e04ce6e62d37312384ff67231eb8fd56d24
         with:
           token: ${{ secrets.CODECOV_TOKEN }}

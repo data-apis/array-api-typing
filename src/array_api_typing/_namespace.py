@@ -1,14 +1,13 @@
 __all__ = ("HasArrayNamespace",)
 
 from types import ModuleType
-from typing import Protocol, final
+from typing import Protocol
 from typing_extensions import TypeVar
 
-T = TypeVar("T", bound=object, default=ModuleType)  # PEP 696 default
+T_co = TypeVar("T_co", covariant=True, bound=object, default=ModuleType)
 
 
-@final
-class HasArrayNamespace(Protocol[T]):  # type: ignore[misc]  # see python/mypy#17288
+class HasArrayNamespace(Protocol[T_co]):
     """Protocol for classes that have an `__array_namespace__` method.
 
     Example:
@@ -26,4 +25,4 @@ class HasArrayNamespace(Protocol[T]):  # type: ignore[misc]  # see python/mypy#1
 
     """
 
-    def __array_namespace__(self, /, *, api_version: str | None = None) -> T: ...  # noqa: PLW3201
+    def __array_namespace__(self, /, *, api_version: str | None = None) -> T_co: ...  # noqa: PLW3201
