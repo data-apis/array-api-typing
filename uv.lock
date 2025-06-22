@@ -11,6 +11,7 @@ source = { editable = "." }
 dependencies = [
     { name = "optype", version = "0.9.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
     { name = "optype", version = "0.12.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+    { name = "tomli", marker = "python_full_version < '3.11'" },
     { name = "typing-extensions" },
 ]
 
@@ -50,6 +51,7 @@ test-runtime = [
 requires-dist = [
     { name = "optype", marker = "python_full_version < '3.11'", specifier = ">=0.9.3" },
     { name = "optype", marker = "python_full_version >= '3.11'", specifier = ">=0.12.2" },
+    { name = "tomli", marker = "python_full_version < '3.11'", specifier = ">=1.2.0" },
     { name = "typing-extensions", specifier = ">=4.14.1" },
 ]
 
