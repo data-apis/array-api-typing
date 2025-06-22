@@ -153,6 +153,25 @@ class CanArrayTrueDiv(Protocol):
         ...
 
 
+class CanArrayFloorDiv(Protocol):
+    """Protocol for array classes that support the floor division operator."""
+
+    def __floordiv__(self, other: Self | int | float, /) -> Self:
+        """Evaluates `self_i // other_i` for each element of an array instance with the respective element of the array `other`.
+
+        Args:
+            other: Must be compatible with `self` (see Broadcasting). Should have a numeric data type.
+
+        Returns:
+            Self: an array containing the element-wise results. The returned array must have a data type determined by Type Promotion Rules.
+
+        See Also:
+            array_api_typing.FloorDiv
+
+        """  # noqa: E501
+        ...
+
+
 class Array(
     HasArrayNamespace[NS_co],
     CanArrayPos,
@@ -161,6 +180,7 @@ class Array(
     CanArraySub,
     CanArrayMul,
     CanArrayTrueDiv,
+    CanArrayFloorDiv,
     Protocol,
 ):
     """Array API specification for array object attributes and methods."""
