@@ -189,6 +189,22 @@ class CanArrayMod(Protocol):
         ...
 
 
+class CanArrayPow(Protocol):
+    """Protocol for array classes that support the power operator."""
+
+    def __pow__(self, other: Self | int | float, /) -> Self:
+        """Calculates an implementation-dependent approximation of exponentiation by raising each element (the base) of an array instance to the power of `other_i` (the exponent), where `other_i` is the corresponding element of the array `other`.
+
+        Args:
+            other: array whose elements correspond to the exponentiation exponent. Must be compatible with `self` (see Broadcasting). Should have a numeric data type.
+
+        Returns:
+            Self: an array containing the element-wise results. The returned array must have a data type determined by Type Promotion Rules.
+
+        """  # noqa: E501
+        ...
+
+
 class Array(
     HasArrayNamespace[NS_co],
     CanArrayPos,
@@ -199,6 +215,7 @@ class Array(
     CanArrayTrueDiv,
     CanArrayFloorDiv,
     CanArrayMod,
+    CanArrayPow,
     Protocol,
 ):
     """Array API specification for array object attributes and methods."""
