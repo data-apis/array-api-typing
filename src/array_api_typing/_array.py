@@ -7,10 +7,10 @@ from types import ModuleType
 from typing import Protocol
 from typing_extensions import TypeVar
 
-T_co = TypeVar("T_co", covariant=True, bound=object, default=ModuleType)
+NS_co = TypeVar("NS_co", covariant=True, bound=object, default=ModuleType)
 
 
-class HasArrayNamespace(Protocol[T_co]):
+class HasArrayNamespace(Protocol[NS_co]):
     """Protocol for classes that have an `__array_namespace__` method.
 
     Example:
@@ -28,11 +28,11 @@ class HasArrayNamespace(Protocol[T_co]):
 
     """
 
-    def __array_namespace__(self, /, *, api_version: str | None = None) -> T_co: ...  # noqa: PLW3201
+    def __array_namespace__(self, /, *, api_version: str | None = None) -> NS_co: ...  # noqa: PLW3201
 
 
 class Array(
-    HasArrayNamespace[T_co],
+    HasArrayNamespace[NS_co],
     Protocol,
 ):
     """Array API specification for array object attributes and methods."""
