@@ -6,5 +6,5 @@ __all__ = (
     "__version_tuple__",
 )
 
-from ._namespace import HasArrayNamespace
+from ._array import HasArrayNamespace
 from ._version import version as __version__, version_tuple as __version_tuple__
