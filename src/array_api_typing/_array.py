@@ -50,9 +50,28 @@ class CanArrayPos(Protocol):
         ...
 
 
+class CanArrayNeg(Protocol):
+    """Protocol for array classes that support the unary minus operator."""
+
+    def __neg__(self) -> Self:
+        """Evaluates `-self_i` for each element of an array instance.
+
+        Returns:
+            Self: an array containing the evaluated result for each element in
+            self. The returned array must have a data type determined by Type
+            Promotion Rules.
+
+        See Also:
+            array_api_typing.Negative
+
+        """
+        ...
+
+
 class Array(
     HasArrayNamespace[NS_co],
     CanArrayPos,
+    CanArrayNeg,
     Protocol,
 ):
     """Array API specification for array object attributes and methods."""
