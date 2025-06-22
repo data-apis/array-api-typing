@@ -172,6 +172,25 @@ class CanArrayFloorDiv(Protocol):
         ...
 
 
+class CanArrayMod(Protocol):
+    """Protocol for array classes that support the modulo operator."""
+
+    def __mod__(self, other: Self | int | float, /) -> Self:
+        """Evaluates `self_i % other_i` for each element of an array instance with the respective element of the array `other`.
+
+        Args:
+            other: Must be compatible with `self` (see Broadcasting). Should have a numeric data type.
+
+        Returns:
+            Self: an array containing the element-wise results. Each element-wise result must have the same sign as the respective element `other_i`. The returned array must have a floating-point data type determined by Type Promotion Rules.
+
+        See Also:
+            array_api_typing.Remainder
+
+        """  # noqa: E501
+        ...
+
+
 class Array(
     HasArrayNamespace[NS_co],
     CanArrayPos,
@@ -181,6 +200,7 @@ class Array(
     CanArrayMul,
     CanArrayTrueDiv,
     CanArrayFloorDiv,
+    CanArrayMod,
     Protocol,
 ):
     """Array API specification for array object attributes and methods."""
