@@ -131,6 +131,8 @@ version_tuple = {version_tuple!r}
       "FBT",    # flake8-boolean-trap
       "FIX",    # flake8-fixme
       "ISC001", # Conflicts with formatter
+      "PLW1641", # Object does not implement `__hash__` method
+      "PYI041", # Use `float` instead of `int | float`
     ]
 
     [tool.ruff.lint.pylint]

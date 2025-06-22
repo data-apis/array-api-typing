@@ -68,10 +68,32 @@ class CanArrayNeg(Protocol):
         ...
 
 
+class CanArrayAdd(Protocol):
+    """Protocol for array classes that support the addition operator."""
+
+    def __add__(self, other: Self | int | float, /) -> Self:
+        """Calculates the sum for each element of an array instance with the respective element of the array `other`.
+
+        Args:
+            other: addend array. Must be compatible with `self` (see
+            Broadcasting). Should have a numeric data type.
+
+        Returns:
+            Self: an array containing the element-wise sums. The returned array
+            must have a data type determined by Type Promotion Rules.
+
+        See Also:
+            array_api_typing.Add
+
+        """  # noqa: E501
+        ...
+
+
 class Array(
     HasArrayNamespace[NS_co],
     CanArrayPos,
     CanArrayNeg,
+    CanArrayAdd,
     Protocol,
 ):
     """Array API specification for array object attributes and methods."""
