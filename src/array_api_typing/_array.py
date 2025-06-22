@@ -1,4 +1,7 @@
-__all__ = ("HasArrayNamespace",)
+__all__ = (
+    "Array",
+    "HasArrayNamespace",
+)
 
 from types import ModuleType
 from typing import Literal, Protocol
@@ -28,3 +31,10 @@ class HasArrayNamespace(Protocol[T_co]):
     def __array_namespace__(
         self, /, *, api_version: Literal["2021.12"] | None = None
     ) -> T_co: ...
+
+
+class Array(
+    HasArrayNamespace[T_co],
+    Protocol,
+):
+    """Array API specification for array object attributes and methods."""
