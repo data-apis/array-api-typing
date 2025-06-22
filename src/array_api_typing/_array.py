@@ -134,6 +134,25 @@ class CanArrayMul(Protocol):
         ...
 
 
+class CanArrayTrueDiv(Protocol):
+    """Protocol for array classes that support the true division operator."""
+
+    def __truediv__(self, other: Self | int | float, /) -> Self:
+        """Evaluates `self_i / other_i` for each element of an array instance with the respective element of the array `other`.
+
+        Args:
+            other: Must be compatible with `self` (see Broadcasting). Should have a numeric data type.
+
+        Returns:
+            Self: an array containing the element-wise results. The returned array should have a floating-point data type determined by Type Promotion Rules.
+
+        See Also:
+            array_api_typing.TrueDiv
+
+        """  # noqa: E501
+        ...
+
+
 class Array(
     HasArrayNamespace[NS_co],
     CanArrayPos,
@@ -141,6 +160,7 @@ class Array(
     CanArrayAdd,
     CanArraySub,
     CanArrayMul,
+    CanArrayTrueDiv,
     Protocol,
 ):
     """Array API specification for array object attributes and methods."""
