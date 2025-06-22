@@ -5,7 +5,7 @@ __all__ = (
 
 from types import ModuleType
 from typing import Literal, Protocol
-from typing_extensions import TypeVar
+from typing_extensions import Self, TypeVar
 
 NS_co = TypeVar("NS_co", covariant=True, default=ModuleType)
 
@@ -33,8 +33,26 @@ class HasArrayNamespace(Protocol[NS_co]):
     ) -> NS_co: ...
 
 
+class CanArrayPos(Protocol):
+    """Protocol for array classes that support the unary plus operator."""
+
+    def __pos__(self) -> Self:
+        """Evaluates `+self_i` for each element of an array instance.
+
+        Returns:
+            Self: An array containing the evaluated result for each element.
+            The returned array must have the same data type as self.
+
+        See Also:
+            array_api_typing.Positive
+
+        """
+        ...
+
+
 class Array(
     HasArrayNamespace[NS_co],
+    CanArrayPos,
     Protocol,
 ):
     """Array API specification for array object attributes and methods."""
