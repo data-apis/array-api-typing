@@ -89,11 +89,37 @@ class CanArrayAdd(Protocol):
         ...
 
 
+class CanArraySub(Protocol):
+    """Protocol for array classes that support the subtraction operator."""
+
+    def __sub__(self, other: Self | int | float, /) -> Self:
+        """Calculates the difference for each element of an array instance with the respective element of the array other.
+
+        The result of `self_i - other_i` must be the same as `self_i +
+        (-other_i)` and must be governed by the same floating-point rules as
+        addition (see `CanArrayAdd`).
+
+        Args:
+            other: subtrahend array. Must be compatible with self (see
+            Broadcasting). Should have a numeric data type.
+
+        Returns:
+            Self: an array containing the element-wise differences. The returned
+            array must have a data type determined by Type Promotion Rules.
+
+        See Also:
+            array_api_typing.Subtract
+
+        """  # noqa: E501
+        ...
+
+
 class Array(
     HasArrayNamespace[NS_co],
     CanArrayPos,
     CanArrayNeg,
     CanArrayAdd,
+    CanArraySub,
     Protocol,
 ):
     """Array API specification for array object attributes and methods."""
