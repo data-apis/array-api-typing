@@ -87,6 +87,25 @@ class CanArrayAdd(Protocol):
         ...
 
 
+class CanArrayIAdd(Protocol):
+    """Protocol for array classes that support the in-place addition operator."""
+
+    def __iadd__(self, other: Self | int | float, /) -> Self:
+        """Calculates the in-place sum for each element of an array instance with the respective element of the array `other`.
+
+        Args:
+            other: addend array. Must be compatible with `self` (see Broadcasting). Should have a numeric data type.
+
+        Returns:
+            Self: `self`, after performing the in-place addition. The returned array must have a data type determined by Type Promotion Rules.
+
+        See Also:
+            array_api_typing.Add
+
+        """  # noqa: E501
+        ...
+
+
 class CanArraySub(Protocol):
     """Protocol for array classes that support the subtraction operator."""
 
@@ -210,6 +229,7 @@ class Array(
     CanArrayPos,
     CanArrayNeg,
     CanArrayAdd,
+    CanArrayIAdd,
     CanArraySub,
     CanArrayMul,
     CanArrayTrueDiv,
