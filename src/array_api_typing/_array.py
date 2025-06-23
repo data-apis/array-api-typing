@@ -302,6 +302,25 @@ class CanArrayPow(Protocol):
         ...
 
 
+class CanArrayIPow(Protocol):
+    """Protocol for array classes that support the in-place power operator."""
+
+    def __ipow__(self, other: Self | int | float, /) -> Self:
+        """Calculates the in-place power for each element of an array instance with the respective element of the array `other`.
+
+        Args:
+            other: exponent array. Must be compatible with `self` (see Broadcasting). Should have a numeric data type.
+
+        Returns:
+            Self: `self`, after performing the in-place power operation. The returned array must have a data type determined by Type Promotion Rules.
+
+        See Also:
+            array_api_typing.Power
+
+        """  # noqa: E501
+        ...
+
+
 class Array(
     HasArrayNamespace[NS_co],
     CanArrayPos,
@@ -317,6 +336,7 @@ class Array(
     CanArrayIFloorDiv,
     CanArrayMod,
     CanArrayPow,
+    CanArrayIPow,
     Protocol,
 ):
     """Array API specification for array object attributes and methods."""
