@@ -108,6 +108,25 @@ class CanArrayIAdd(Protocol):
         ...
 
 
+class CanArrayRAdd(Protocol):
+    """Protocol for array classes that support the right addition operator."""
+
+    def __radd__(self, other: Self | int | float, /) -> Self:
+        """Calculates the sum for each element of the array `other` with the respective element of an array instance.
+
+        Args:
+            other: addend array. Must be compatible with `self` (see Broadcasting). Should have a numeric data type.
+
+        Returns:
+            Self: an array containing the element-wise sums. The returned array must have a data type determined by Type Promotion Rules.
+
+        See Also:
+            array_api_typing.Add
+
+        """  # noqa: E501
+        ...
+
+
 class CanArraySub(Protocol):
     """Protocol for array classes that support the subtraction operator."""
 
@@ -346,6 +365,7 @@ class Array(
     CanArrayNeg,
     CanArrayAdd,
     CanArrayIAdd,
+    CanArrayRAdd,
     CanArraySub,
     CanArrayISub,
     CanArrayMul,
