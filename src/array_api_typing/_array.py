@@ -286,6 +286,25 @@ class CanArrayMod(Protocol):
         ...
 
 
+class CanArrayIMod(Protocol):
+    """Protocol for array classes that support the in-place modulo operator."""
+
+    def __imod__(self, other: Self | int | float, /) -> Self:
+        """Calculates the in-place remainder for each element of an array instance with the respective element of the array `other`.
+
+        Args:
+            other: divisor array. Must be compatible with `self` (see Broadcasting). Should have a numeric data type.
+
+        Returns:
+            Self: `self`, after performing the in-place modulo operation. The returned array must have a data type determined by Type Promotion Rules.
+
+        See Also:
+            array_api_typing.Remainder
+
+        """  # noqa: E501
+        ...
+
+
 class CanArrayPow(Protocol):
     """Protocol for array classes that support the power operator."""
 
@@ -335,6 +354,7 @@ class Array(
     CanArrayFloorDiv,
     CanArrayIFloorDiv,
     CanArrayMod,
+    CanArrayIMod,
     CanArrayPow,
     CanArrayIPow,
     Protocol,
