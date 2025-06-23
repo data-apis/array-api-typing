@@ -435,6 +435,25 @@ class CanArrayIPow(Protocol):
         ...
 
 
+class CanArrayRPow(Protocol):
+    """Protocol for array classes that support the right power operator."""
+
+    def __rpow__(self, other: Self | int | float, /) -> Self:
+        """Calculates the power for each element of the array `other` raised to the respective element of an array instance.
+
+        Args:
+            other: base array. Must be compatible with `self` (see Broadcasting). Should have a numeric data type.
+
+        Returns:
+            Self: an array containing the element-wise powers. The returned array must have a data type determined by Type Promotion Rules.
+
+        See Also:
+            array_api_typing.Power
+
+        """  # noqa: E501
+        ...
+
+
 class Array(
     HasArrayNamespace[NS_co],
     CanArrayPos,
@@ -457,6 +476,7 @@ class Array(
     CanArrayIMod,
     CanArrayPow,
     CanArrayIPow,
+    CanArrayRPow,
     Protocol,
 ):
     """Array API specification for array object attributes and methods."""
