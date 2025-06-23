@@ -288,6 +288,25 @@ class CanArrayITruediv(Protocol):
         ...
 
 
+class CanArrayRTrueDiv(Protocol):
+    """Protocol for array classes that support the right true division operator."""
+
+    def __rtruediv__(self, other: Self | int | float, /) -> Self:
+        """Calculates the quotient for each element of the array `other` with the respective element of an array instance.
+
+        Args:
+            other: dividend array. Must be compatible with `self` (see Broadcasting). Should have a numeric data type.
+
+        Returns:
+            Self: an array containing the element-wise quotients. The returned array must have a data type determined by Type Promotion Rules.
+
+        See Also:
+            array_api_typing.TrueDiv
+
+        """  # noqa: E501
+        ...
+
+
 class CanArrayFloorDiv(Protocol):
     """Protocol for array classes that support the floor division operator."""
 
@@ -413,6 +432,7 @@ class Array(
     CanArrayIMul,
     CanArrayRMul,
     CanArrayTrueDiv,
+    CanArrayRTrueDiv,
     CanArrayFloorDiv,
     CanArrayIFloorDiv,
     CanArrayMod,
