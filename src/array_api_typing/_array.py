@@ -169,6 +169,27 @@ class CanArrayISub(Protocol):
         ...
 
 
+class CanArrayRSub(Protocol):
+    """Protocol for array classes that support the right subtraction operator."""
+
+    def __rsub__(self, other: Self | int | float, /) -> Self:
+        """Calculates the difference for each element of the array `other` with the respective element of an array instance.
+
+        The result of `other_i - self_i` must be the same as `other_i + (-self_i)` and must be governed by the same floating-point rules as addition (see `CanArrayAdd`).
+
+        Args:
+            other: minuend array. Must be compatible with `self` (see Broadcasting). Should have a numeric data type.
+
+        Returns:
+            Self: an array containing the element-wise differences. The returned array must have a data type determined by Type Promotion Rules.
+
+        See Also:
+            array_api_typing.Subtract
+
+        """  # noqa: E501
+        ...
+
+
 class CanArrayMul(Protocol):
     """Protocol for array classes that support the multiplication operator."""
 
@@ -366,6 +387,7 @@ class Array(
     CanArrayRAdd,
     CanArraySub,
     CanArrayISub,
+    CanArrayRSub,
     CanArrayMul,
     CanArrayIMul,
     CanArrayTrueDiv,
