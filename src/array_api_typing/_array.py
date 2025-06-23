@@ -170,6 +170,25 @@ class CanArrayMul(Protocol):
         ...
 
 
+class CanArrayIMul(Protocol):
+    """Protocol for array classes that support the in-place multiplication operator."""
+
+    def __imul__(self, other: Self | int | float, /) -> Self:
+        """Calculates the in-place product for each element of an array instance with the respective element of the array `other`.
+
+        Args:
+            other: multiplicand array. Must be compatible with `self` (see Broadcasting). Should have a numeric data type.
+
+        Returns:
+            Self: `self`, after performing the in-place multiplication. The returned array must have a data type determined by Type Promotion Rules.
+
+        See Also:
+            array_api_typing.Multiply
+
+        """  # noqa: E501
+        ...
+
+
 class CanArrayTrueDiv(Protocol):
     """Protocol for array classes that support the true division operator."""
 
@@ -252,6 +271,7 @@ class Array(
     CanArraySub,
     CanArrayISub,
     CanArrayMul,
+    CanArrayIMul,
     CanArrayTrueDiv,
     CanArrayFloorDiv,
     CanArrayMod,
