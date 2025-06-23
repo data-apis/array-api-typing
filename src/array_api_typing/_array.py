@@ -208,6 +208,25 @@ class CanArrayTrueDiv(Protocol):
         ...
 
 
+class CanArrayITruediv(Protocol):
+    """Protocol for array classes that support the in-place true division operator."""
+
+    def __itruediv__(self, other: Self | int | float, /) -> Self:
+        """Calculates the in-place quotient for each element of an array instance with the respective element of the array `other`.
+
+        Args:
+            other: divisor array. Must be compatible with `self` (see Broadcasting). Should have a numeric data type.
+
+        Returns:
+            Self: `self`, after performing the in-place true division. The returned array must have a data type determined by Type Promotion Rules.
+
+        See Also:
+            array_api_typing.TrueDiv
+
+        """  # noqa: E501
+        ...
+
+
 class CanArrayFloorDiv(Protocol):
     """Protocol for array classes that support the floor division operator."""
 
