@@ -343,6 +343,25 @@ class CanArrayIFloorDiv(Protocol):
         ...
 
 
+class CanArrayRFloorDiv(Protocol):
+    """Protocol for array classes that support the right floor division operator."""
+
+    def __rfloordiv__(self, other: Self | int | float, /) -> Self:
+        """Calculates the floor division for each element of the array `other` with the respective element of an array instance.
+
+        Args:
+            other: dividend array. Must be compatible with `self` (see Broadcasting). Should have a numeric data type.
+
+        Returns:
+            Self: an array containing the element-wise floor division results. The returned array must have a data type determined by Type Promotion Rules.
+
+        See Also:
+            array_api_typing.FloorDiv
+
+        """  # noqa: E501
+        ...
+
+
 class CanArrayMod(Protocol):
     """Protocol for array classes that support the modulo operator."""
 
@@ -433,6 +452,7 @@ class Array(
     CanArrayRTrueDiv,
     CanArrayFloorDiv,
     CanArrayIFloorDiv,
+    CanArrayRFloorDiv,
     CanArrayMod,
     CanArrayIMod,
     CanArrayPow,
