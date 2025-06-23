@@ -402,6 +402,25 @@ class CanArrayIMod(Protocol):
         ...
 
 
+class CanArrayRMod(Protocol):
+    """Protocol for array classes that support the right modulo operator."""
+
+    def __rmod__(self, other: Self | int | float, /) -> Self:
+        """Calculates the remainder for each element of the array `other` with the respective element of an array instance.
+
+        Args:
+            other: dividend array. Must be compatible with `self` (see Broadcasting). Should have a numeric data type.
+
+        Returns:
+            Self: an array containing the element-wise remainders. The returned array must have a data type determined by Type Promotion Rules.
+
+        See Also:
+            array_api_typing.Remainder
+
+        """  # noqa: E501
+        ...
+
+
 class CanArrayPow(Protocol):
     """Protocol for array classes that support the power operator."""
 
@@ -476,6 +495,7 @@ class Array(
     CanArrayRFloorDiv,
     CanArrayMod,
     CanArrayIMod,
+    CanArrayRMod,
     CanArrayPow,
     CanArrayIPow,
     CanArrayRPow,
