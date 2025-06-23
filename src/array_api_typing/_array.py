@@ -133,6 +133,25 @@ class CanArraySub(Protocol):
         ...
 
 
+class CanArrayISub(Protocol):
+    """Protocol for array classes that support the in-place subtraction operator."""
+
+    def __isub__(self, other: Self | int | float, /) -> Self:
+        """Calculates the in-place difference for each element of an array instance with the respective element of the array `other`.
+
+        Args:
+            other: subtrahend array. Must be compatible with `self` (see Broadcasting). Should have a numeric data type.
+
+        Returns:
+            Self: `self`, after performing the in-place subtraction. The returned array must have a data type determined by Type Promotion Rules.
+
+        See Also:
+            array_api_typing.Subtract
+
+        """  # noqa: E501
+        ...
+
+
 class CanArrayMul(Protocol):
     """Protocol for array classes that support the multiplication operator."""
 
@@ -233,6 +252,7 @@ class Array(
     CanArrayAdd,
     CanArrayIAdd,
     CanArraySub,
+    CanArrayISub,
     CanArrayMul,
     CanArrayTrueDiv,
     CanArrayFloorDiv,
