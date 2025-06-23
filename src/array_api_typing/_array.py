@@ -231,6 +231,25 @@ class CanArrayIMul(Protocol):
         ...
 
 
+class CanArrayRMul(Protocol):
+    """Protocol for array classes that support the right multiplication operator."""
+
+    def __rmul__(self, other: Self | int | float, /) -> Self:
+        """Calculates the product for each element of the array `other` with the respective element of an array instance.
+
+        Args:
+            other: multiplicand array. Must be compatible with `self` (see Broadcasting). Should have a numeric data type.
+
+        Returns:
+            Self: an array containing the element-wise products. The returned array must have a data type determined by Type Promotion Rules.
+
+        See Also:
+            array_api_typing.Multiply
+
+        """  # noqa: E501
+        ...
+
+
 class CanArrayTrueDiv(Protocol):
     """Protocol for array classes that support the true division operator."""
 
@@ -392,6 +411,7 @@ class Array(
     CanArrayRSub,
     CanArrayMul,
     CanArrayIMul,
+    CanArrayRMul,
     CanArrayTrueDiv,
     CanArrayFloorDiv,
     CanArrayIFloorDiv,
