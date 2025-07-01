@@ -139,10 +139,13 @@ allow-dunder-method-names = [
 ]
 
 [tool.ruff.lint.flake8-import-conventions]
-banned-from = ["array_api_typing"]
+banned-from = ["array_api_typing", "optype", "optype.numpy", "optype.numpy.compat"]
 
 [tool.ruff.lint.flake8-import-conventions.extend-aliases]
 array_api_typing = "xpt"
+optype = "op"
+"optype.numpy" = "onp"
+"optype.numpy.compat" = "npc"
 
 [tool.ruff.lint.isort]
 combine-as-imports = true
