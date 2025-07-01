@@ -8,6 +8,7 @@ __all__ = (
     "HasNDim",
     "HasShape",
     "HasSize",
+    "HasTranspose",
     "__version__",
     "__version_tuple__",
 )
@@ -20,5 +21,6 @@ from ._array import (
     HasNDim,
     HasShape,
     HasSize,
+    HasTranspose,
 )
 from ._version import version as __version__, version_tuple as __version_tuple__
