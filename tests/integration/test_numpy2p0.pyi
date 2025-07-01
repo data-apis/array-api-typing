@@ -81,3 +81,8 @@ _: int = x_b.ndim
 _: tuple[int | None, ...] = x_f32.shape
 _: tuple[int | None, ...] = x_i32.shape
 _: tuple[int | None, ...] = x_b.shape
+
+# Check Attribute `.size`
+_: int | None = x_f32.size
+_: int | None = x_i32.size
+_: int | None = x_b.size

@@ -71,3 +71,7 @@ _: int = x_i32.ndim
 # Check Attribute `.shape`
 _: tuple[int | None, ...] = x_f32.shape
 _: tuple[int | None, ...] = x_i32.shape
+
+# Check Attribute `.size`
+_: int | None = x_f32.size
+_: int | None = x_i32.size
