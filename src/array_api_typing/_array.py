@@ -6,6 +6,7 @@ __all__ = (
     "HasMatrixTranspose",
     "HasNDim",
     "HasShape",
+    "HasSize",
 )
 
 from types import ModuleType
@@ -137,6 +138,25 @@ class HasShape(Protocol):
         ...
 
 
+class HasSize(Protocol):
+    """Protocol for array classes that have a size attribute."""
+
+    @property
+    def size(self) -> int | None:
+        """Number of elements in an array.
+
+        Returns:
+            int | None: number of elements in an array. The returned value must
+                be `None` if and only if one or more array dimensions are
+                unknown.
+
+        Notes:
+            This must equal the product of the array's dimensions.
+
+        """
+        ...
+
+
 class Array(
     # ------ Attributes -------
     HasDType[DTypeT_co],
@@ -144,6 +164,7 @@ class Array(
     HasMatrixTranspose,
     HasNDim,
     HasShape,
+    HasSize,
     # ------- Methods ---------
     HasArrayNamespace[NamespaceT_co],
     # -------------------------

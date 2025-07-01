@@ -71,3 +71,7 @@ assert_type(x_i32.ndim, int)
 # Check Attribute `.shape`
 assert_type(x_f32.shape, tuple[int | None, ...])
 assert_type(x_i32.shape, tuple[int | None, ...])
+
+# Check Attribute `.size`
+assert_type(x_f32.size, int | None)
+assert_type(x_i32.size, int | None)
