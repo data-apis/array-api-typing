@@ -59,3 +59,7 @@ _: dtype[Any] = x_i32.dtype
 # Check Attribute `.device`
 _: object = x_f32.device
 _: object = x_i32.device
+
+# Check Attribute `.mT`
+_: xpt.Array[dtype[Any]] = x_f32.mT
+_: xpt.Array[dtype[Any]] = x_i32.mT

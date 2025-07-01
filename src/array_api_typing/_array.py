@@ -3,10 +3,11 @@ __all__ = (
     "HasArrayNamespace",
     "HasDType",
     "HasDevice",
+    "HasMatrixTranspose",
 )
 
 from types import ModuleType
-from typing import Literal, Protocol
+from typing import Literal, Protocol, Self
 from typing_extensions import TypeVar
 
 NamespaceT_co = TypeVar("NamespaceT_co", covariant=True, default=ModuleType)
@@ -78,10 +79,32 @@ class HasDevice(Protocol):
         ...
 
 
+class HasMatrixTranspose(Protocol):
+    """Protocol for array classes that have a matrix transpose attribute."""
+
+    @property
+    def mT(self) -> Self:  # noqa: N802
+        """Transpose of a matrix (or a stack of matrices).
+
+        If an array instance has fewer than two dimensions, an error should be
+        raised.
+
+        Returns:
+            Self: array whose last two dimensions (axes) are permuted in reverse
+                order relative to original array (i.e., for an array instance
+                having shape `(..., M, N)`, the returned array must have shape
+                `(..., N, M))`.  The returned array must have the same data type
+                as the original array.
+
+        """
+        ...
+
+
 class Array(
     # ------ Attributes -------
     HasDType[DTypeT_co],
     HasDevice,
+    HasMatrixTranspose,
     # ------- Methods ---------
     HasArrayNamespace[NamespaceT_co],
     # -------------------------

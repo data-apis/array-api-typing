@@ -66,3 +66,8 @@ _: np.dtype[B] = x_b.dtype
 _: object = x_f32.device
 _: object = x_i32.device
 _: object = x_b.device
+
+# Check Attribute `.mT`
+_: xpt.Array[np.dtype[F32]] = x_f32.mT
+_: xpt.Array[np.dtype[I32]] = x_i32.mT
+_: xpt.Array[np.dtype[B]] = x_b.mT

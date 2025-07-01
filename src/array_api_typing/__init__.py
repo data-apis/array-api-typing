@@ -5,6 +5,7 @@ __all__ = (
     "HasArrayNamespace",
     "HasDType",
     "HasDevice",
+    "HasMatrixTranspose",
     "__version__",
     "__version_tuple__",
 )
@@ -14,5 +15,6 @@ from ._array import (
     HasArrayNamespace,
     HasDevice,
     HasDType,
+    HasMatrixTranspose,
 )
 from ._version import version as __version__, version_tuple as __version_tuple__
