@@ -76,6 +76,20 @@ class HasMatrixTranspose(Protocol):
         ...
 
 
+class HasNDim(Protocol):
+    """Protocol for array classes that have a number of dimensions attribute."""
+
+    @property
+    def ndim(self) -> int:
+        """Number of array dimensions (axes).
+
+        Returns:
+            int: number of array dimensions (axes).
+
+        """
+        ...
+
+
 # ============================================================================
 
 
@@ -526,6 +540,7 @@ class Array(
     HasDType[DTypeT_co],
     HasDevice,
     HasMatrixTranspose,
+    HasNDim,
     # ------ Methods -------
     HasArrayNamespace[NS_co],
     CanArrayPos,
