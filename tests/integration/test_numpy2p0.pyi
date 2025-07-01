@@ -78,6 +78,14 @@ _: xpt.HasShape = nparr_f32
 _: xpt.HasShape = nparr_b
 
 # =========================================================
+# `xpt.HasSize`
+
+_: xpt.HasSize = nparr
+_: xpt.HasSize = nparr_i32
+_: xpt.HasSize = nparr_f32
+_: xpt.HasSize = nparr_b
+
+# =========================================================
 # `xpt.Array`
 
 # Check NamespaceT_co assignment

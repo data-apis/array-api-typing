@@ -6,6 +6,7 @@ __all__ = (
     "HasMatrixTranspose",
     "HasNDim",
     "HasShape",
+    "HasSize",
 )
 
 from types import ModuleType
@@ -133,6 +134,25 @@ class HasShape(Protocol):
             dimensions may be unknown due to data-dependent operations (e.g.,
             boolean indexing; `A[:, B > 0]`) and thus cannot be statically
             resolved without knowing array contents.
+
+        """
+        ...
+
+
+class HasSize(Protocol):
+    """Protocol for array classes that have a size attribute."""
+
+    @property
+    def size(self) -> int | None:
+        """Number of elements in an array.
+
+        Returns:
+            int | None: number of elements in an array. The returned value must
+                be `None` if and only if one or more array dimensions are
+                unknown.
+
+        Notes:
+            This must equal the product of the array's dimensions.
 
         """
         ...

@@ -68,6 +68,13 @@ _: xpt.HasShape = nparr_i32
 _: xpt.HasShape = nparr_f32
 
 # =========================================================
+# `xpt.HasShape`
+
+_: xpt.HasShape = nparr
+_: xpt.HasShape = nparr_i32
+_: xpt.HasShape = nparr_f32
+
+# =========================================================
 # `xpt.Array`
 
 # Check NamespaceT_co assignment
