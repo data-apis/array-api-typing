@@ -31,6 +31,24 @@ class HasArrayNamespace(Protocol[NS_co]):
     def __array_namespace__(self, /, *, api_version: str | None = None) -> NS_co: ...  # noqa: PLW3201
 
 
+# ============================================================================
+# Attributes
+
+DTypeT_co = TypeVar("DTypeT_co", covariant=True)
+
+
+class HasDType(Protocol[DTypeT_co]):
+    """Protocol for array classes that have a data type attribute."""
+
+    @property
+    def dtype(self) -> DTypeT_co:
+        """Data type of the array elements."""
+        ...
+
+
+# ============================================================================
+
+
 class CanArrayPos(Protocol):
     """Protocol for array classes that support the unary plus operator."""
 
@@ -474,6 +492,9 @@ class CanArrayRPow(Protocol):
 
 
 class Array(
+    # ------ Attributes -------
+    HasDType[DTypeT_co],
+    # ------ Methods -------
     HasArrayNamespace[NS_co],
     CanArrayPos,
     CanArrayNeg,
