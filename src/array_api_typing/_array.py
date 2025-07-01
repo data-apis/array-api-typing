@@ -5,6 +5,7 @@ __all__ = (
     "HasDevice",
     "HasMatrixTranspose",
     "HasNDim",
+    "HasShape",
 )
 
 from types import ModuleType
@@ -115,12 +116,34 @@ class HasNDim(Protocol):
         ...
 
 
+class HasShape(Protocol):
+    """Protocol for array classes that have a shape attribute."""
+
+    @property
+    def shape(self) -> tuple[int | None, ...]:
+        """Shape of the array.
+
+        Returns:
+            tuple[int | None, ...]: array dimensions. An array dimension must be None
+                if and only if a dimension is unknown.
+
+        Notes:
+            For array libraries having graph-based computational models, array
+            dimensions may be unknown due to data-dependent operations (e.g.,
+            boolean indexing; `A[:, B > 0]`) and thus cannot be statically
+            resolved without knowing array contents.
+
+        """
+        ...
+
+
 class Array(
     # ------ Attributes -------
     HasDType[DTypeT_co],
     HasDevice,
     HasMatrixTranspose,
     HasNDim,
+    HasShape,
     # ------- Methods ---------
     HasArrayNamespace[NamespaceT_co],
     # -------------------------

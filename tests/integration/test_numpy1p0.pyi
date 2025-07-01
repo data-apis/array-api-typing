@@ -67,3 +67,7 @@ assert_type(x_i32.mT, xpt.Array[dtype[Any]])
 # Check Attribute `.ndim`
 assert_type(x_f32.ndim, int)
 assert_type(x_i32.ndim, int)
+
+# Check Attribute `.shape`
+assert_type(x_f32.shape, tuple[int | None, ...])
+assert_type(x_i32.shape, tuple[int | None, ...])

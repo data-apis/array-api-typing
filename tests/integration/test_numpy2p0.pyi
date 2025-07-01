@@ -76,3 +76,8 @@ assert_type(x_b.mT, xpt.Array[np.dtype[B]])
 assert_type(x_f32.ndim, int)
 assert_type(x_i32.ndim, int)
 assert_type(x_b.ndim, int)
+
+# Check Attribute `.shape`
+assert_type(x_f32.shape, tuple[int | None, ...])
+assert_type(x_i32.shape, tuple[int | None, ...])
+assert_type(x_b.shape, tuple[int | None, ...])
