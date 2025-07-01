@@ -86,3 +86,8 @@ _: tuple[int | None, ...] = x_b.shape
 _: int | None = x_f32.size
 _: int | None = x_i32.size
 _: int | None = x_b.size
+
+# Check Attribute `.T`
+_: xpt.Array[np.dtype[F32]] = x_f32.T
+_: xpt.Array[np.dtype[I32]] = x_i32.T
+_: xpt.Array[np.dtype[B]] = x_b.T

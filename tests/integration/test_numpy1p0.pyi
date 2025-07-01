@@ -75,3 +75,7 @@ _: tuple[int | None, ...] = x_i32.shape
 # Check Attribute `.size`
 _: int | None = x_f32.size
 _: int | None = x_i32.size
+
+# Check Attribute `.T`
+_: xpt.Array[dtype[Any]] = x_f32.T
+_: xpt.Array[dtype[Any]] = x_i32.T
