@@ -46,6 +46,15 @@ class HasDType(Protocol[DTypeT_co]):
         ...
 
 
+class HasDevice(Protocol):
+    """Protocol for array classes that have a device attribute."""
+
+    @property
+    def device(self) -> object:  # TODO: more specific type
+        """Hardware device the array data resides on."""
+        ...
+
+
 # ============================================================================
 
 
@@ -494,6 +503,7 @@ class CanArrayRPow(Protocol):
 class Array(
     # ------ Attributes -------
     HasDType[DTypeT_co],
+    HasDevice,
     # ------ Methods -------
     HasArrayNamespace[NS_co],
     CanArrayPos,
