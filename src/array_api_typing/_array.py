@@ -130,6 +130,35 @@ class HasSize(Protocol):
         ...
 
 
+class HasTranspose(Protocol):
+    """Protocol for array classes that support the transpose operation."""
+
+    def T(self) -> Self:  # noqa: N802
+        """Transpose of the array.
+
+        The array instance must be two-dimensional. If the array instance is not
+        two-dimensional, an error should be raised.
+
+        Returns:
+            Self: two-dimensional array whose first and last dimensions (axes)
+                are permuted in reverse order relative to original array. The
+                returned array must have the same data type as the original
+                array.
+
+        Notes:
+            Limiting the transpose to two-dimensional arrays (matrices) deviates
+            from the NumPy et al practice of reversing all axes for arrays
+            having more than two-dimensions. This is intentional, as reversing
+            all axes was found to be problematic (e.g., conflicting with the
+            mathematical definition of a transpose which is limited to matrices;
+            not operating on batches of matrices; et cetera). In order to
+            reverse all axes, one is recommended to use the functional
+            `PermuteDims` interface found in this specification.
+
+        """
+        ...
+
+
 # ============================================================================
 
 
@@ -583,6 +612,7 @@ class Array(
     HasNDim,
     HasShape,
     HasSize,
+    HasTranspose,
     # ------ Methods -------
     HasArrayNamespace[NS_co],
     CanArrayPos,
