@@ -1,7 +1,7 @@
 from typing import Any
 
 # requires numpy < 2
-import numpy.array_api as np
+import numpy.array_api as np  # type: ignore[import-not-found]
 
 import array_api_typing as xpt
 

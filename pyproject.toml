@@ -27,6 +27,8 @@ classifiers = [
 ]
 dependencies = [
   "typing-extensions>=4.14.1",
+  "optype>=0.9.3; python_version < '3.11'",
+  "optype>=0.12.2; python_version >= '3.11'",
 ]
 
 [project.urls]
