@@ -75,6 +75,13 @@ _: xpt.HasShape = nparr_i32
 _: xpt.HasShape = nparr_f32
 
 # =========================================================
+# `xpt.HasTranspose`
+
+_: xpt.HasTranspose = nparr
+_: xpt.HasTranspose = nparr_i32
+_: xpt.HasTranspose = nparr_f32
+
+# =========================================================
 # `xpt.Array`
 
 # Check NamespaceT_co assignment
