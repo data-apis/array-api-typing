@@ -76,3 +76,8 @@ _: xpt.Array[np.dtype[B]] = x_b.mT
 _: int = x_f32.ndim
 _: int = x_i32.ndim
 _: int = x_b.ndim
+
+# Check Attribute `.shape`
+_: tuple[int | None, ...] = x_f32.shape
+_: tuple[int | None, ...] = x_i32.shape
+_: tuple[int | None, ...] = x_b.shape
