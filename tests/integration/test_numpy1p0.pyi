@@ -59,3 +59,7 @@ assert_type(x_i32.dtype, dtype[Any])
 # Check Attribute `.device`
 assert_type(x_f32.device, object)
 assert_type(x_i32.device, object)
+
+# Check Attribute `.mT`
+assert_type(x_f32.mT, xpt.Array[dtype[Any]])
+assert_type(x_i32.mT, xpt.Array[dtype[Any]])
