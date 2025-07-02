@@ -83,7 +83,7 @@ jobs:
       - name: get major numpy version
         id: numpy-major
         run: |
-          version=$(echo ${{ matrix.numpy-version }} | cut -c 1-7)
+          version=$(echo ${{ matrix.numpy-version }} | cut -c 1)
           echo "::set-output name=version::$version"
 
       - name: install deps
