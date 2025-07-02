@@ -82,12 +82,12 @@ jobs:
 
       - name: (DEBUG) print numpy version # TODO
         run: >
-          uv run --no-editable --group=mypy --with="numpy==${{ matrix.numpy-version }}"
+          uv run --isolated --group=mypy --with="numpy==${{ matrix.numpy-version }}"
           python -c "import numpy; print(numpy.__version__)"
 
       - name: mypy
         run: >
-          uv run --no-editable --group=mypy --with="numpy==${{ matrix.numpy-version }}" --reinstall
+          uv run --isolated --group=mypy --with="numpy==${{ matrix.numpy-version }}"
           mypy --tb --no-incremental --cache-dir=/dev/null tests/integration/test_numpy.pyi
 
       # TODO: (based)pyright
