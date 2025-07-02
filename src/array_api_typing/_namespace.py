@@ -4,7 +4,7 @@ from types import ModuleType
 from typing import Protocol
 from typing_extensions import TypeVar
 
-T_co = TypeVar("T_co", covariant=True, bound=object, default=ModuleType)
+T_co = TypeVar("T_co", covariant=True, default=ModuleType)
 
 
 class HasArrayNamespace(Protocol[T_co]):
