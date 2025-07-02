@@ -83,9 +83,14 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: (DEBUG) print numpy version  # TODO
+        run: >
+          uv run --no-editable --group=mypy --with="numpy==${{ matrix.numpy-version }}"
+          python -c "import numpy; print(numpy.__version__)"
+
       - name: mypy
         run: >
-          uv run --no-editable --group=test_numpy --with="numpy==${{ matrix.numpy-version }}" --active
+          uv run --no-editable --group=mypy --with="numpy==${{ matrix.numpy-version }}"
           mypy --tb --no-incremental --cache-dir=/dev/null tests/integration/test_numpy.pyi
 
       # TODO: (based)pyright
