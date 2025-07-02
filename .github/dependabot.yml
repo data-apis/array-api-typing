@@ -14,7 +14,7 @@ updates:
       actions:
         patterns: ["*"]
 
-  # this doesn't work (yet?)
+  # this doesn't work yet: https://github.com/astral-sh/uv/issues/2512
   - package-ecosystem: uv
     versioning-strategy: increase
     directory: /
