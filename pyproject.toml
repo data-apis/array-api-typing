@@ -41,18 +41,28 @@
 
 [dependency-groups]
   dev = [
-    { include-group = "test" },
-    "lefthook>=1.11.13",
+    { include-group = "lint" },
+    { include-group = "mypy" },
+    { include-group = "test_runtime" },
+    { include-group = "test_static" },
+    "lefthook==1.11.14",
   ]
-  test = [
-    "numpy>=1.25",
-    "pytest==8.3.3",
-    "pytest-cov>=6",
-    "pytest-github-actions-annotate-failures>=0.3.0",
-    "sybil>=8.0.0",
+  lint = [
+    "ruff==0.12.1",
   ]
   mypy = [
-    "mypy>=1.16.0"
+    "mypy==1.16.1",
+    "orjson>=3.10.18; python_version<'3.14'", # used by mypy
+  ]
+  test_runtime = [
+    "pytest==8.4.1",
+    "pytest-cov>=6.2.1",
+    "pytest-github-actions-annotate-failures==0.3.0",
+    "sybil==9.1.0",
+  ]
+  test_static = [
+    { include-group = "mypy" },
+    "numpy>=1.25",
   ]
 
 
@@ -75,28 +85,14 @@ version_tuple = {version_tuple!r}
 
 
 [tool.mypy]
-  files = ["src", "tests"]
-  python_version = "3.10"
-  mypy_path = "src"
+  mypy_path = ["src"]
+  namespace_packages = true
 
   strict = true
-  disallow_incomplete_defs = true
-  disallow_untyped_defs = true
-  disable_bytearray_promotion = true  # Note(2024-12-05): these are private flags
-  disable_memoryview_promotion = true  # Note(2024-12-05): these are private flags
+  allow_redefinition_new = true
+  local_partial_types = true
   enable_error_code = ["ignore-without-code", "redundant-expr", "truthy-bool"]
-
-  warn_return_any = true
   warn_unreachable = true
-  warn_unused_configs = true
-
-  [[tool.mypy.overrides]]
-    module = "sybil.*"
-    ignore_missing_imports = true
-
-  [[tool.mypy.overrides]]
-    module = "tests.*"
-    disallow_untyped_defs = false
 
 
 [tool.pytest.ini_options]
@@ -114,9 +110,8 @@ version_tuple = {version_tuple!r}
     "ignore:ast\\.Str is deprecated and will be removed in Python 3\\.14:DeprecationWarning",
   ]
   log_cli_level = "INFO"
-  minversion = "8.3"
-  testpaths = ["README.md", "src/", "tests/"]
-  norecursedirs = ["docs/_build"]
+  minversion = "8.4"
+  testpaths = ["README.md", "src/", "tests/runtime/"]
   xfail_strict = true
 
 
@@ -138,6 +133,16 @@ version_tuple = {version_tuple!r}
       "ISC001", # Conflicts with formatter
     ]
 
+    [tool.ruff.lint.pylint]
+      allow-dunder-method-names = [
+        "__array_api_version__",
+        "__array_namespace__",
+        "__array_namespace_info__",
+        "__dlpack__",
+        "__dlpack_device__",
+        "__dlpack_device__",
+      ]
+
     [tool.ruff.lint.per-file-ignores]
       "tests/*.py" = ["ANN201", "D1", "S101"]
 
@@ -149,7 +154,7 @@ version_tuple = {version_tuple!r}
 
     [tool.ruff.lint.isort]
       combine-as-imports = true
-      extra-standard-library = ["typing_extensions"]
+      extra-standard-library = ["_typeshed", "typing_extensions"]
       known-local-folder = ["array_api_typing"]
 
   [tool.ruff.format]
