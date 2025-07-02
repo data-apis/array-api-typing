@@ -44,15 +44,15 @@
     { include-group = "lint" },
     { include-group = "mypy" },
     { include-group = "test_runtime" },
-    { include-group = "test_static" },
+    { include-group = "test_numpy" },
     "lefthook==1.11.14",
+    "orjson>=3.10.18; python_version<'3.14'", # used by mypy
   ]
   lint = [
     "ruff==0.12.1",
   ]
   mypy = [
     "mypy==1.16.1",
-    "orjson>=3.10.18; python_version<'3.14'", # used by mypy
   ]
   test_runtime = [
     "pytest==8.4.1",
@@ -60,8 +60,7 @@
     "pytest-github-actions-annotate-failures==0.3.0",
     "sybil==9.1.0",
   ]
-  test_static = [
-    { include-group = "mypy" },
+  test_numpy = [
     "numpy>=1.25",
   ]
 
