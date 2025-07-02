@@ -2,5 +2,8 @@ extend = "../pyproject.toml"
 
 [lint]
 extend-ignore = [
+  "ANN201", # https://docs.astral.sh/ruff/rules/missing-return-type-undocumented-public-function/
+  "D1",     # https://docs.astral.sh/ruff/rules/#pydocstyle-d
   "INP001", # https://docs.astral.sh/ruff/rules/implicit-namespace-package/
+  "S101",   # https://docs.astral.sh/ruff/rules/assert/
 ]

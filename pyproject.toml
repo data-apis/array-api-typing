@@ -142,9 +142,6 @@ version_tuple = {version_tuple!r}
         "__dlpack_device__",
       ]
 
-    [tool.ruff.lint.per-file-ignores]
-      "tests/*.py" = ["ANN201", "D1", "S101"]
-
     [tool.ruff.lint.flake8-import-conventions]
       banned-from = ["array_api_typing"]
 
