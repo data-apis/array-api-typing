@@ -87,7 +87,7 @@ jobs:
 
       - name: mypy
         run: >
-          uv run --no-editable --group=mypy --with="numpy==${{ matrix.numpy-version }}" --refresh
+          uv run --no-editable --group=mypy --with="numpy==${{ matrix.numpy-version }}" --reinstall
           mypy --tb --no-incremental --cache-dir=/dev/null tests/integration/test_numpy.pyi
 
       # TODO: (based)pyright
