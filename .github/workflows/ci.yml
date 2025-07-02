@@ -83,7 +83,7 @@ jobs:
       - name: mypy
         run: >
           uv run --no-editable --group=test_numpy --with="numpy==${{ matrix.numpy-version }}"
-          mypy --tb --no-incremental --cache-dir=/dev/null tests/integration/test_numpy.py
+          mypy --tb --no-incremental --cache-dir=/dev/null tests/integration/test_numpy.pyi
 
       # TODO: (based)pyright
 
