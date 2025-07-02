@@ -3,7 +3,7 @@ updates:
   - package-ecosystem: github-actions
     directory: /
     schedule:
-      interval: daily
+      interval: weekly
     allow:
       - dependency-type: "all"
     labels:
@@ -19,7 +19,7 @@ updates:
     versioning-strategy: increase
     directory: /
     schedule:
-      interval: daily
+      interval: weekly
     allow:
       - dependency-type: "all"
     labels:
