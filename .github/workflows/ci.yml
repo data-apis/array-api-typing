@@ -83,13 +83,13 @@ jobs:
 
       - name: (DEBUG) print numpy version # TODO
         run: >
-          uv run --group=mypy --with="numpy==${{ matrix.numpy-version }}" --exact
+          uv run --group=mypy --with="numpy==${{ matrix.numpy-version }}"
           python -c "import numpy; print(numpy.__version__)"
 
       - name: mypy
         run: >
-          uv run --group=mypy --with="numpy==${{ matrix.numpy-version }}" --exact
-          mypy --tb --no-incremental --cache-dir=/dev/null tests/integration/test_numpy.pyi
+          uv run --group=mypy --with="numpy==${{ matrix.numpy-version }}"
+          mypy --tb tests/integration/test_numpy.pyi
 
       # TODO: (based)pyright
 
