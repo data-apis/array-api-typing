@@ -12,6 +12,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
+  UV_LOCKED: 1
   # Many color libraries just need this to be set to any value, but at least
   # one distinguishes color depth, where "3" -> "256-bit color".
   FORCE_COLOR: 3
@@ -20,8 +21,6 @@ jobs:
   lint:
     name: lint
     runs-on: ubuntu-latest
-    env:
-      UV_FROZEN: 1
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
@@ -41,8 +40,6 @@ jobs:
   test_runtime:
     name: runtime tests
     runs-on: ${{ matrix.runs-on }}
-    env:
-      UV_FROZEN: 1
     strategy:
       fail-fast: false
       matrix:
@@ -90,7 +87,7 @@ jobs:
 
       - name: mypy
         run: >
-          uv run --no-editable --group=mypy --with="numpy==${{ matrix.numpy-version }}"
+          uv run --no-editable --group=mypy --with="numpy==${{ matrix.numpy-version }}" --refresh
           mypy --tb --no-incremental --cache-dir=/dev/null tests/integration/test_numpy.pyi
 
       # TODO: (based)pyright
