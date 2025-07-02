@@ -1,0 +1,642 @@
+__all__ = (
+    "Array",
+    "HasArrayNamespace",
+)
+
+from types import ModuleType
+from typing import Protocol
+from typing_extensions import Self, TypeVar
+
+NS_co = TypeVar("NS_co", covariant=True, bound=object, default=ModuleType)
+
+
+class HasArrayNamespace(Protocol[NS_co]):
+    """Protocol for classes that have an `__array_namespace__` method.
+
+    Example:
+    >>> import array_api_typing as xpt
+    >>>
+    >>> class MyArray:
+    ...     def __array_namespace__(self):
+    ...         return object()
+    >>>
+    >>> x = MyArray()
+    >>> def has_array_namespace(x: xpt.HasArrayNamespace) -> bool:
+    ...     return hasattr(x, "__array_namespace__")
+    >>> has_array_namespace(x)
+    True
+
+    """
+
+    def __array_namespace__(self, /, *, api_version: str | None = None) -> NS_co: ...  # noqa: PLW3201
+
+
+# ============================================================================
+# Attributes
+
+DTypeT_co = TypeVar("DTypeT_co", covariant=True)
+
+
+class HasDType(Protocol[DTypeT_co]):
+    """Protocol for array classes that have a data type attribute."""
+
+    @property
+    def dtype(self) -> DTypeT_co:
+        """Data type of the array elements."""
+        ...
+
+
+class HasDevice(Protocol):
+    """Protocol for array classes that have a device attribute."""
+
+    @property
+    def device(self) -> object:  # TODO: more specific type
+        """Hardware device the array data resides on."""
+        ...
+
+
+class HasMatrixTranspose(Protocol):
+    """Protocol for array classes that have a matrix transpose attribute."""
+
+    @property
+    def mT(self) -> Self:  # noqa: N802
+        """Transpose of a matrix (or a stack of matrices).
+
+        If an array instance has fewer than two dimensions, an error should be
+        raised.
+
+        Returns:
+            Self: array whose last two dimensions (axes) are permuted in reverse
+                order relative to original array (i.e., for an array instance
+                having shape `(..., M, N)`, the returned array must have shape
+                `(..., N, M))`.  The returned array must have the same data type
+                as the original array.
+
+        """
+        ...
+
+
+class HasNDim(Protocol):
+    """Protocol for array classes that have a number of dimensions attribute."""
+
+    @property
+    def ndim(self) -> int:
+        """Number of array dimensions (axes).
+
+        Returns:
+            int: number of array dimensions (axes).
+
+        """
+        ...
+
+
+class HasShape(Protocol):
+    """Protocol for array classes that have a shape attribute."""
+
+    @property
+    def shape(self) -> tuple[int | None, ...]:
+        """Shape of the array.
+
+        Returns:
+            tuple[int | None, ...]: array dimensions. An array dimension must be None
+                if and only if a dimension is unknown.
+
+        Notes:
+            For array libraries having graph-based computational models, array
+            dimensions may be unknown due to data-dependent operations (e.g.,
+            boolean indexing; `A[:, B > 0]`) and thus cannot be statically
+            resolved without knowing array contents.
+
+        """
+        ...
+
+
+class HasSize(Protocol):
+    """Protocol for array classes that have a size attribute."""
+
+    @property
+    def size(self) -> int | None:
+        """Number of elements in an array.
+
+        Returns:
+            int | None: number of elements in an array. The returned value must
+                be `None` if and only if one or more array dimensions are
+                unknown.
+
+        Notes:
+            This must equal the product of the array's dimensions.
+
+        """
+        ...
+
+
+class HasTranspose(Protocol):
+    """Protocol for array classes that support the transpose operation."""
+
+    def T(self) -> Self:  # noqa: N802
+        """Transpose of the array.
+
+        The array instance must be two-dimensional. If the array instance is not
+        two-dimensional, an error should be raised.
+
+        Returns:
+            Self: two-dimensional array whose first and last dimensions (axes)
+                are permuted in reverse order relative to original array. The
+                returned array must have the same data type as the original
+                array.
+
+        Notes:
+            Limiting the transpose to two-dimensional arrays (matrices) deviates
+            from the NumPy et al practice of reversing all axes for arrays
+            having more than two-dimensions. This is intentional, as reversing
+            all axes was found to be problematic (e.g., conflicting with the
+            mathematical definition of a transpose which is limited to matrices;
+            not operating on batches of matrices; et cetera). In order to
+            reverse all axes, one is recommended to use the functional
+            `PermuteDims` interface found in this specification.
+
+        """
+        ...
+
+
+# ============================================================================
+
+
+class CanArrayPos(Protocol):
+    """Protocol for array classes that support the unary plus operator."""
+
+    def __pos__(self) -> Self:
+        """Evaluates `+self_i` for each element of an array instance.
+
+        Returns:
+            Self: An array containing the evaluated result for each element.
+            The returned array must have the same data type as self.
+
+        See Also:
+            array_api_typing.Positive
+
+        """
+        ...
+
+
+class CanArrayNeg(Protocol):
+    """Protocol for array classes that support the unary minus operator."""
+
+    def __neg__(self) -> Self:
+        """Evaluates `-self_i` for each element of an array instance.
+
+        Returns:
+            Self: an array containing the evaluated result for each element in
+            self. The returned array must have a data type determined by Type
+            Promotion Rules.
+
+        See Also:
+            array_api_typing.Negative
+
+        """
+        ...
+
+
+class CanArrayAdd(Protocol):
+    """Protocol for array classes that support the addition operator."""
+
+    def __add__(self, other: Self | int | float, /) -> Self:
+        """Calculates the sum for each element of an array instance with the respective element of the array `other`.
+
+        Args:
+            other: addend array. Must be compatible with `self` (see
+            Broadcasting). Should have a numeric data type.
+
+        Returns:
+            Self: an array containing the element-wise sums. The returned array
+            must have a data type determined by Type Promotion Rules.
+
+        See Also:
+            array_api_typing.Add
+
+        """  # noqa: E501
+        ...
+
+
+class CanArrayIAdd(Protocol):
+    """Protocol for array classes that support the in-place addition operator."""
+
+    def __iadd__(self, other: Self | int | float, /) -> Self:
+        """Calculates the in-place sum for each element of an array instance with the respective element of the array `other`.
+
+        Args:
+            other: addend array. Must be compatible with `self` (see Broadcasting). Should have a numeric data type.
+
+        Returns:
+            Self: `self`, after performing the in-place addition. The returned array must have a data type determined by Type Promotion Rules.
+
+        See Also:
+            array_api_typing.Add
+
+        """  # noqa: E501
+        ...
+
+
+class CanArrayRAdd(Protocol):
+    """Protocol for array classes that support the right addition operator."""
+
+    def __radd__(self, other: Self | int | float, /) -> Self:
+        """Calculates the sum for each element of the array `other` with the respective element of an array instance.
+
+        Args:
+            other: addend array. Must be compatible with `self` (see Broadcasting). Should have a numeric data type.
+
+        Returns:
+            Self: an array containing the element-wise sums. The returned array must have a data type determined by Type Promotion Rules.
+
+        See Also:
+            array_api_typing.Add
+
+        """  # noqa: E501
+        ...
+
+
+class CanArraySub(Protocol):
+    """Protocol for array classes that support the subtraction operator."""
+
+    def __sub__(self, other: Self | int | float, /) -> Self:
+        """Calculates the difference for each element of an array instance with the respective element of the array other.
+
+        The result of `self_i - other_i` must be the same as `self_i +
+        (-other_i)` and must be governed by the same floating-point rules as
+        addition (see `CanArrayAdd`).
+
+        Args:
+            other: subtrahend array. Must be compatible with self (see
+            Broadcasting). Should have a numeric data type.
+
+        Returns:
+            Self: an array containing the element-wise differences. The returned
+            array must have a data type determined by Type Promotion Rules.
+
+        See Also:
+            array_api_typing.Subtract
+
+        """  # noqa: E501
+        ...
+
+
+class CanArrayISub(Protocol):
+    """Protocol for array classes that support the in-place subtraction operator."""
+
+    def __isub__(self, other: Self | int | float, /) -> Self:
+        """Calculates the in-place difference for each element of an array instance with the respective element of the array `other`.
+
+        Args:
+            other: subtrahend array. Must be compatible with `self` (see Broadcasting). Should have a numeric data type.
+
+        Returns:
+            Self: `self`, after performing the in-place subtraction. The returned array must have a data type determined by Type Promotion Rules.
+
+        See Also:
+            array_api_typing.Subtract
+
+        """  # noqa: E501
+        ...
+
+
+class CanArrayRSub(Protocol):
+    """Protocol for array classes that support the right subtraction operator."""
+
+    def __rsub__(self, other: Self | int | float, /) -> Self:
+        """Calculates the difference for each element of the array `other` with the respective element of an array instance.
+
+        The result of `other_i - self_i` must be the same as `other_i + (-self_i)` and must be governed by the same floating-point rules as addition (see `CanArrayAdd`).
+
+        Args:
+            other: minuend array. Must be compatible with `self` (see Broadcasting). Should have a numeric data type.
+
+        Returns:
+            Self: an array containing the element-wise differences. The returned array must have a data type determined by Type Promotion Rules.
+
+        See Also:
+            array_api_typing.Subtract
+
+        """  # noqa: E501
+        ...
+
+
+class CanArrayMul(Protocol):
+    """Protocol for array classes that support the multiplication operator."""
+
+    def __mul__(self, other: Self | int | float, /) -> Self:
+        """Calculates the product for each element of an array instance with the respective element of the array `other`.
+
+        Args:
+            other: multiplicand array. Must be compatible with self (see Broadcasting). Should have a numeric data type.
+
+        Returns:
+            Self: an array containing the element-wise products. The returned
+            array must have a data type determined by Type Promotion Rules.
+
+        See Also:
+            array_api_typing.Multiply
+
+        """  # noqa: E501
+        ...
+
+
+class CanArrayIMul(Protocol):
+    """Protocol for array classes that support the in-place multiplication operator."""
+
+    def __imul__(self, other: Self | int | float, /) -> Self:
+        """Calculates the in-place product for each element of an array instance with the respective element of the array `other`.
+
+        Args:
+            other: multiplicand array. Must be compatible with `self` (see Broadcasting). Should have a numeric data type.
+
+        Returns:
+            Self: `self`, after performing the in-place multiplication. The returned array must have a data type determined by Type Promotion Rules.
+
+        See Also:
+            array_api_typing.Multiply
+
+        """  # noqa: E501
+        ...
+
+
+class CanArrayRMul(Protocol):
+    """Protocol for array classes that support the right multiplication operator."""
+
+    def __rmul__(self, other: Self | int | float, /) -> Self:
+        """Calculates the product for each element of the array `other` with the respective element of an array instance.
+
+        Args:
+            other: multiplicand array. Must be compatible with `self` (see Broadcasting). Should have a numeric data type.
+
+        Returns:
+            Self: an array containing the element-wise products. The returned array must have a data type determined by Type Promotion Rules.
+
+        See Also:
+            array_api_typing.Multiply
+
+        """  # noqa: E501
+        ...
+
+
+class CanArrayTrueDiv(Protocol):
+    """Protocol for array classes that support the true division operator."""
+
+    def __truediv__(self, other: Self | int | float, /) -> Self:
+        """Evaluates `self_i / other_i` for each element of an array instance with the respective element of the array `other`.
+
+        Args:
+            other: Must be compatible with `self` (see Broadcasting). Should have a numeric data type.
+
+        Returns:
+            Self: an array containing the element-wise results. The returned array should have a floating-point data type determined by Type Promotion Rules.
+
+        See Also:
+            array_api_typing.TrueDiv
+
+        """  # noqa: E501
+        ...
+
+
+class CanArrayITruediv(Protocol):
+    """Protocol for array classes that support the in-place true division operator."""
+
+    def __itruediv__(self, other: Self | int | float, /) -> Self:
+        """Calculates the in-place quotient for each element of an array instance with the respective element of the array `other`.
+
+        Args:
+            other: divisor array. Must be compatible with `self` (see Broadcasting). Should have a numeric data type.
+
+        Returns:
+            Self: `self`, after performing the in-place true division. The returned array must have a data type determined by Type Promotion Rules.
+
+        See Also:
+            array_api_typing.TrueDiv
+
+        """  # noqa: E501
+        ...
+
+
+class CanArrayRTrueDiv(Protocol):
+    """Protocol for array classes that support the right true division operator."""
+
+    def __rtruediv__(self, other: Self | int | float, /) -> Self:
+        """Calculates the quotient for each element of the array `other` with the respective element of an array instance.
+
+        Args:
+            other: dividend array. Must be compatible with `self` (see Broadcasting). Should have a numeric data type.
+
+        Returns:
+            Self: an array containing the element-wise quotients. The returned array must have a data type determined by Type Promotion Rules.
+
+        See Also:
+            array_api_typing.TrueDiv
+
+        """  # noqa: E501
+        ...
+
+
+class CanArrayFloorDiv(Protocol):
+    """Protocol for array classes that support the floor division operator."""
+
+    def __floordiv__(self, other: Self | int | float, /) -> Self:
+        """Evaluates `self_i // other_i` for each element of an array instance with the respective element of the array `other`.
+
+        Args:
+            other: Must be compatible with `self` (see Broadcasting). Should have a numeric data type.
+
+        Returns:
+            Self: an array containing the element-wise results. The returned array must have a data type determined by Type Promotion Rules.
+
+        See Also:
+            array_api_typing.FloorDiv
+
+        """  # noqa: E501
+        ...
+
+
+class CanArrayIFloorDiv(Protocol):
+    """Protocol for array classes that support the in-place floor division operator."""
+
+    def __ifloordiv__(self, other: Self | int | float, /) -> Self:
+        """Calculates the in-place floor division for each element of an array instance with the respective element of the array `other`.
+
+        Args:
+            other: divisor array. Must be compatible with `self` (see Broadcasting). Should have a numeric data type.
+
+        Returns:
+            Self: `self`, after performing the in-place floor division. The returned array must have a data type determined by Type Promotion Rules.
+
+        See Also:
+            array_api_typing.FloorDiv
+
+        """  # noqa: E501
+        ...
+
+
+class CanArrayRFloorDiv(Protocol):
+    """Protocol for array classes that support the right floor division operator."""
+
+    def __rfloordiv__(self, other: Self | int | float, /) -> Self:
+        """Calculates the floor division for each element of the array `other` with the respective element of an array instance.
+
+        Args:
+            other: dividend array. Must be compatible with `self` (see Broadcasting). Should have a numeric data type.
+
+        Returns:
+            Self: an array containing the element-wise floor division results. The returned array must have a data type determined by Type Promotion Rules.
+
+        See Also:
+            array_api_typing.FloorDiv
+
+        """  # noqa: E501
+        ...
+
+
+class CanArrayMod(Protocol):
+    """Protocol for array classes that support the modulo operator."""
+
+    def __mod__(self, other: Self | int | float, /) -> Self:
+        """Evaluates `self_i % other_i` for each element of an array instance with the respective element of the array `other`.
+
+        Args:
+            other: Must be compatible with `self` (see Broadcasting). Should have a numeric data type.
+
+        Returns:
+            Self: an array containing the element-wise results. Each element-wise result must have the same sign as the respective element `other_i`. The returned array must have a floating-point data type determined by Type Promotion Rules.
+
+        See Also:
+            array_api_typing.Remainder
+
+        """  # noqa: E501
+        ...
+
+
+class CanArrayIMod(Protocol):
+    """Protocol for array classes that support the in-place modulo operator."""
+
+    def __imod__(self, other: Self | int | float, /) -> Self:
+        """Calculates the in-place remainder for each element of an array instance with the respective element of the array `other`.
+
+        Args:
+            other: divisor array. Must be compatible with `self` (see Broadcasting). Should have a numeric data type.
+
+        Returns:
+            Self: `self`, after performing the in-place modulo operation. The returned array must have a data type determined by Type Promotion Rules.
+
+        See Also:
+            array_api_typing.Remainder
+
+        """  # noqa: E501
+        ...
+
+
+class CanArrayRMod(Protocol):
+    """Protocol for array classes that support the right modulo operator."""
+
+    def __rmod__(self, other: Self | int | float, /) -> Self:
+        """Calculates the remainder for each element of the array `other` with the respective element of an array instance.
+
+        Args:
+            other: dividend array. Must be compatible with `self` (see Broadcasting). Should have a numeric data type.
+
+        Returns:
+            Self: an array containing the element-wise remainders. The returned array must have a data type determined by Type Promotion Rules.
+
+        See Also:
+            array_api_typing.Remainder
+
+        """  # noqa: E501
+        ...
+
+
+class CanArrayPow(Protocol):
+    """Protocol for array classes that support the power operator."""
+
+    def __pow__(self, other: Self | int | float, /) -> Self:
+        """Calculates an implementation-dependent approximation of exponentiation by raising each element (the base) of an array instance to the power of `other_i` (the exponent), where `other_i` is the corresponding element of the array `other`.
+
+        Args:
+            other: array whose elements correspond to the exponentiation exponent. Must be compatible with `self` (see Broadcasting). Should have a numeric data type.
+
+        Returns:
+            Self: an array containing the element-wise results. The returned array must have a data type determined by Type Promotion Rules.
+
+        """  # noqa: E501
+        ...
+
+
+class CanArrayIPow(Protocol):
+    """Protocol for array classes that support the in-place power operator."""
+
+    def __ipow__(self, other: Self | int | float, /) -> Self:
+        """Calculates the in-place power for each element of an array instance with the respective element of the array `other`.
+
+        Args:
+            other: exponent array. Must be compatible with `self` (see Broadcasting). Should have a numeric data type.
+
+        Returns:
+            Self: `self`, after performing the in-place power operation. The returned array must have a data type determined by Type Promotion Rules.
+
+        See Also:
+            array_api_typing.Power
+
+        """  # noqa: E501
+        ...
+
+
+class CanArrayRPow(Protocol):
+    """Protocol for array classes that support the right power operator."""
+
+    def __rpow__(self, other: Self | int | float, /) -> Self:
+        """Calculates the power for each element of the array `other` raised to the respective element of an array instance.
+
+        Args:
+            other: base array. Must be compatible with `self` (see Broadcasting). Should have a numeric data type.
+
+        Returns:
+            Self: an array containing the element-wise powers. The returned array must have a data type determined by Type Promotion Rules.
+
+        See Also:
+            array_api_typing.Power
+
+        """  # noqa: E501
+        ...
+
+
+class Array(
+    # ------ Attributes -------
+    HasDType[DTypeT_co],
+    HasDevice,
+    HasMatrixTranspose,
+    HasNDim,
+    HasShape,
+    HasSize,
+    HasTranspose,
+    # ------ Methods -------
+    HasArrayNamespace[NS_co],
+    CanArrayPos,
+    CanArrayNeg,
+    CanArrayAdd,
+    CanArrayIAdd,
+    CanArrayRAdd,
+    CanArraySub,
+    CanArrayISub,
+    CanArrayRSub,
+    CanArrayMul,
+    CanArrayIMul,
+    CanArrayRMul,
+    CanArrayTrueDiv,
+    CanArrayRTrueDiv,
+    CanArrayFloorDiv,
+    CanArrayIFloorDiv,
+    CanArrayRFloorDiv,
+    CanArrayMod,
+    CanArrayIMod,
+    CanArrayRMod,
+    CanArrayPow,
+    CanArrayIPow,
+    CanArrayRPow,
+    Protocol,
+):
+    """Array API specification for array object attributes and methods."""
