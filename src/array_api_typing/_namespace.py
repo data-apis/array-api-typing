@@ -25,4 +25,4 @@ class HasArrayNamespace(Protocol[T_co]):
 
     """
 
-    def __array_namespace__(self, /, *, api_version: str | None = None) -> T_co: ...  # noqa: PLW3201
+    def __array_namespace__(self, /, *, api_version: str | None = None) -> T_co: ...

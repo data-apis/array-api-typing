@@ -12,13 +12,14 @@ concurrency:
   cancel-in-progress: true
 
 env:
+  UV_FROZEN: 1
   # Many color libraries just need this to be set to any value, but at least
   # one distinguishes color depth, where "3" -> "256-bit color".
   FORCE_COLOR: 3
 
 jobs:
   format:
-    name: Format
+    name: lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -26,14 +27,16 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@bd01e18f51369d5a26f1651c3cb451d3417e3bba
 
-      - name: Install the project
-        run: uv sync --locked --group test
+      - name: ruff
+        run: |
+          uv run ruff check --output-format=github
+          uv run ruff format --check
 
-      - name: Run lefthook hooks
-        run: uv run --frozen lefthook run pre-commit
+      - name: mypy
+        run: uv run mypy --tb --no-incremental --cache-dir=/dev/null src
 
   checks:
-    name: Check Python ${{ matrix.python-version }} on ${{ matrix.runs-on }}
+    name: test runtime
     runs-on: ${{ matrix.runs-on }}
     needs: [format]
     strategy:
@@ -50,13 +53,10 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install the project
-        run: uv sync --locked --group test
-
       - name: Test package
         run: >-
-          uv run --frozen pytest
-          --cov --cov-report=xml --cov-report=term --durations=20
+          uv run --group=test_runtime
+          pytest --cov --cov-report=xml --cov-report=term --durations=20
 
       - name: Upload coverage report
         uses: codecov/codecov-action@18283e04ce6e62d37312384ff67231eb8fd56d24
@@ -64,7 +64,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
 
   check_oldest:
-    name: Check Oldest Dependencies
+    name: runtime tests (oldest deps)
     runs-on: ${{ matrix.runs-on }}
     needs: [format]
     strategy:
@@ -80,13 +80,11 @@ jobs:
         uses: astral-sh/setup-uv@bd01e18f51369d5a26f1651c3cb451d3417e3bba
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Install the project
-        run: uv sync --group test --resolution lowest-direct
 
       - name: Test package
         run: >-
-          uv run --frozen pytest
-          --cov --cov-report=xml --cov-report=term --durations=20
+          uv run --group=test_runtime --resolution=lowest-direct
+          pytest --cov --cov-report=xml --cov-report=term --durations=20
 
       - name: Upload coverage report
         uses: codecov/codecov-action@18283e04ce6e62d37312384ff67231eb8fd56d24
