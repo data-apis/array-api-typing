@@ -79,19 +79,18 @@ jobs:
       - uses: astral-sh/setup-uv@bd01e18f51369d5a26f1651c3cb451d3417e3bba # v6.3.1
         with:
           python-version: "3.11"
-          enable-cache: false
           activate-environment: true
 
-      - name: (DEBUG) print numpy version # TODO
+      - name: install deps
         run: |
           uv sync --no-editable --group=mypy
           uv pip install numpy==${{ matrix.numpy-version }}
 
-      - name: (DEBUG) print numpy version # TODO
-        run: uv run --no-sync python -c "import numpy; print(numpy.__version__)"
-
+      # NOTE: `uv run --with=...` will be ignored by mypy (and `--isolated` does not help)
       - name: mypy
-        run: uv run --no-sync mypy --tb tests/integration/test_numpy.pyi
+        run: >
+          uv run --no-sync --active
+          mypy --tb --no-incremental --cache-dir=/dev/null tests/integration/test_numpy.pyi
 
       # TODO: (based)pyright
 
