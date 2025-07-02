@@ -5,7 +5,7 @@
 
 > [!WARNING]
 > This package is in early development and is not yet stable. It is intended as a typing toolkit
-> for working the [Python array API standard](https://data-apis.org/array-api/latest/), but it
+> for working with the [Python array API standard](https://data-apis.org/array-api/latest/), but it
 > may change significantly in the future.
 
 
