@@ -32,6 +32,11 @@ jobs:
           uv run ruff check --output-format=github
           uv run ruff format --check
 
+      # TODO: Fail if lefthook changes any files:
+      # https://github.com/data-apis/array-api-typing/pull/35/files#r2179941334
+      - name: lefthook
+        run: uv run lefthook run pre-commit
+
       - name: mypy
         run: uv run mypy --tb --no-incremental --cache-dir=/dev/null src
 
