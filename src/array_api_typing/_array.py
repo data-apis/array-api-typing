@@ -25,7 +25,7 @@ with _docstrings_path.open("rb") as f:
     _array_docstrings = tomllib.load(f)["docstrings"]
 
 NS_co = TypeVar("NS_co", covariant=True, default=ModuleType)
-InputT = TypeVar("InputT")
+T_contra = TypeVar("T_contra", contravariant=True)
 
 
 class HasArrayNamespace(Protocol[NS_co]):
@@ -56,27 +56,28 @@ class Array(
     HasArrayNamespace[NS_co],
     op.CanPosSelf,
     op.CanNegSelf,
-    op.CanAddSelf[InputT],
-    op.CanIAddSelf[InputT],
-    op.CanRAddSelf[InputT],
-    op.CanSubSelf[InputT],
-    op.CanISubSelf[InputT],
-    op.CanRSubSelf[InputT],
-    op.CanMulSelf[InputT],
-    op.CanIMulSelf[InputT],
-    op.CanRMulSelf[InputT],
-    op.CanTrueDivSelf[InputT],
-    op.CanRTrueDivSelf[InputT],
-    op.CanFloorDivSelf[InputT],
-    op.CanIFloorDivSelf[InputT],
-    op.CanRFloorDivSelf[InputT],
-    op.CanModSelf[InputT],
-    op.CanIModSelf[InputT],
-    op.CanRModSelf[InputT],
-    op.CanPowSelf[InputT],
-    op.CanIPowSelf[InputT],
-    op.CanRPowSelf[InputT],
-    Protocol[InputT, NS_co],
+    op.CanAddSame[T_contra],
+    op.CanIAddSelf[T_contra],
+    op.CanRAddSelf[T_contra],
+    op.CanSubSame[T_contra],
+    op.CanISubSelf[T_contra],
+    op.CanRSubSelf[T_contra],
+    op.CanMulSame[T_contra],
+    op.CanIMulSelf[T_contra],
+    op.CanRMulSelf[T_contra],
+    op.CanTruedivSame[T_contra],
+    op.CanITruedivSelf[T_contra],
+    op.CanRTruedivSelf[T_contra],
+    op.CanFloordivSame[T_contra],
+    op.CanIFloordivSelf[T_contra],
+    op.CanRFloordivSelf[T_contra],
+    op.CanModSame[T_contra],
+    op.CanIModSelf[T_contra],
+    op.CanRModSelf[T_contra],
+    op.CanPowSame[T_contra],
+    op.CanIPowSelf[T_contra],
+    op.CanRPowSelf[T_contra],
+    Protocol[T_contra, NS_co],
 ):
     """Array API specification for array object attributes and methods."""
 
@@ -84,7 +85,7 @@ class Array(
 BoolArray: TypeAlias = Array[bool, NS_co]
 """Array API specification for boolean array object attributes and methods.
 
-Specifically, this type alias fills the `InputT` type variable with `bool`,
+Specifically, this type alias fills the `T_contra` type variable with `bool`,
 allowing for `bool` objects to be added, subtracted, multiplied, etc. to the
 array object.
 
@@ -93,7 +94,7 @@ array object.
 NumericArray: TypeAlias = Array[float | int, NS_co]
 """Array API specification for numeric array object attributes and methods.
 
-Specifically, this type alias fills the `InputT` type variable with `float |
+Specifically, this type alias fills the `T_contra` type variable with `float |
 int`, allowing for `float | int` objects to be added, subtracted, multiplied,
 etc. to the array object.
 
