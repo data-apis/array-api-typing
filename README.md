@@ -44,6 +44,7 @@ pip install -e .  # editable mode
 
 ### Quick example
 
+<!-- dprint-ignore-start -->
 ```pycon
 >>> import array_api_typing as xpt
 >>> import numpy as np
@@ -53,4 +54,6 @@ pip install -e .  # editable mode
 
 >>> func(np.array([1, 2, 3]))
 array([1, 2, 3])
+
 ```
+<!-- dprint-ignore-end -->
