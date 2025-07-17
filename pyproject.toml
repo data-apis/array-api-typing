@@ -49,7 +49,7 @@
     "orjson>=3.11.0; python_version<'3.14'", # used by mypy
   ]
   lint = [
-    "ruff==0.12.1",
+    "ruff==0.12.4",
   ]
   mypy = [
     "mypy==1.17.0",
