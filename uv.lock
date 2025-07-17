@@ -15,6 +15,7 @@ dependencies = [
 
 [package.dev-dependencies]
 dev = [
+    { name = "dprint-py" },
     { name = "lefthook" },
     { name = "mypy" },
     { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
@@ -27,6 +28,7 @@ dev = [
     { name = "sybil" },
 ]
 lint = [
+    { name = "dprint-py" },
     { name = "ruff" },
 ]
 mypy = [
@@ -48,7 +50,8 @@ requires-dist = [{ name = "typing-extensions", specifier = ">=4.14.1" }]
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "lefthook", specifier = "==1.12.0" },
+    { name = "dprint-py", specifier = ">=0.50.0.0" },
+    { name = "lefthook", specifier = "==1.12.2" },
     { name = "mypy", specifier = "==1.17.0" },
     { name = "numpy", specifier = ">=1.25" },
     { name = "orjson", marker = "python_full_version < '3.14'", specifier = ">=3.11.0" },
@@ -58,7 +61,10 @@ dev = [
     { name = "ruff", specifier = "==0.12.4" },
     { name = "sybil", specifier = "==9.1.0" },
 ]
-lint = [{ name = "ruff", specifier = "==0.12.4" }]
+lint = [
+    { name = "dprint-py", specifier = ">=0.50.0.0" },
+    { name = "ruff", specifier = "==0.12.4" },
+]
 mypy = [{ name = "mypy", specifier = "==1.17.0" }]
 test-numpy = [{ name = "numpy", specifier = ">=1.25" }]
 test-runtime = [
@@ -147,6 +153,18 @@ toml = [
 ]
 
 [[package]]
+name = "dprint-py"
+version = "0.50.0.0"
+source = { registry = "https://pypi.org/simple" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/dd/93/d86ec5ffa5ce38382b2100c40338a1452ddbac3deee65a9f14237612312d/dprint_py-0.50.0.0-py3-none-macosx_11_0_arm64.whl", hash = "sha256:70e569d2971ba3c8863073b573dcb77f2bf187b1ca4b309ac608fb5a40672e0e", size = 21333922, upload-time = "2025-05-19T01:26:44.093Z" },
+    { url = "https://files.pythonhosted.org/packages/80/75/ba51567099ff5cd3ad38933c767c0c7e667b2bd5ec4c8b071d0dfa300471/dprint_py-0.50.0.0-py3-none-macosx_11_0_x86_64.whl", hash = "sha256:827a8ec8eca6b9ea88990a8848600c5c1b635717ef724ae531ccc5ba2e3b2022", size = 22516283, upload-time = "2025-05-19T01:26:46.989Z" },
+    { url = "https://files.pythonhosted.org/packages/8f/be/d4aef796fad5e4a34a621905c678d7fe0124795c1c8a65c96e71137c81b5/dprint_py-0.50.0.0-py3-none-manylinux_2_17_aarch64.whl", hash = "sha256:1dfe5b4d73aeadc10116f37341c4eac4651c85254a68e8693eb83e6928ae80de", size = 23866263, upload-time = "2025-05-19T01:26:50.035Z" },
+    { url = "https://files.pythonhosted.org/packages/7c/2e/a82a2de42d057a0e9713a497fdefe9729ce5d79d523a826c4a150e68ecc4/dprint_py-0.50.0.0-py3-none-manylinux_2_17_x86_64.whl", hash = "sha256:19cd159462841442f6d7431e36d29911f6fb63702163ad5fb5bb438ad04f6863", size = 24582934, upload-time = "2025-05-19T01:26:54.347Z" },
+    { url = "https://files.pythonhosted.org/packages/0c/3c/57941c239eef3fa74ff44fb1452e56b04cb08ae3af39669b8b7178ff80ad/dprint_py-0.50.0.0-py3-none-win_amd64.whl", hash = "sha256:90de7885d3c9d6b13949ed609f2f2256b4ea74bf1355adcdfda0c30f7e3f9d47", size = 20785813, upload-time = "2025-05-19T01:26:57.162Z" },
+]
+
+[[package]]
 name = "exceptiongroup"
 version = "1.3.0"
 source = { registry = "https://pypi.org/simple" }
@@ -169,11 +187,11 @@ wheels = [
 
 [[package]]
 name = "lefthook"
-version = "1.12.0"
+version = "1.12.2"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/f6/54/44fe438c96f8248da8952268b9c4ea712d2ef30a41f077d3a479d06be9e3/lefthook-1.12.0.tar.gz", hash = "sha256:25cbaff4043d93048b12218f322ff03dd6c819f62ee37149fb7e0723ce0bb822", size = 51062845, upload-time = "2025-07-08T13:07:33.603Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/4c/00/28d555139119488cc353860f3bfbff16c788c3a6f571eb771e81e35b89d9/lefthook-1.12.2.tar.gz", hash = "sha256:932aad5491b107b1fe770a85be4ef1e6798df084f309070d041c6a3280c56728", size = 51089410, upload-time = "2025-07-11T10:50:11.559Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/92/bd/7460c6107e49a8e250e054c459a437358932586b12d8fc95e7ab3643c966/lefthook-1.12.0-py3-none-any.whl", hash = "sha256:eb9a080dfc53fc6ae147975a87e4dbf463c5df910074a2901bd66f69d8136b52", size = 51308088, upload-time = "2025-07-08T13:07:28.955Z" },
+    { url = "https://files.pythonhosted.org/packages/08/6f/6b1730419215ea204f6f1f71370e44a7775ba2db0ca8d4372c08c176e710/lefthook-1.12.2-py3-none-any.whl", hash = "sha256:59b773512cf2e5ec646b03fa2966d600452825c4cb2e5cc81277804e71616805", size = 51332387, upload-time = "2025-07-11T10:50:07.284Z" },
 ]
 
 [[package]]

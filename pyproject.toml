@@ -45,11 +45,12 @@
     { include-group = "mypy" },
     { include-group = "test_runtime" },
     { include-group = "test_numpy" },
-    "lefthook==1.12.0",
+    "lefthook==1.12.2",
     "orjson>=3.11.0; python_version<'3.14'", # used by mypy
   ]
   lint = [
     "ruff==0.12.4",
+    "dprint-py>=0.50.0.0",
   ]
   mypy = [
     "mypy==1.17.0",
