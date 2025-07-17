@@ -8,7 +8,6 @@
 > for working with the [Python array API standard](https://data-apis.org/array-api/latest/), but it
 > may change significantly in the future.
 
-
 ## Installation
 
 ```bash
@@ -54,5 +53,4 @@ pip install -e .  # editable mode
 
 >>> func(np.array([1, 2, 3]))
 array([1, 2, 3])
-
 ```
