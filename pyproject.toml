@@ -127,9 +127,11 @@ version_tuple = {version_tuple!r}
       "D107",   # Missing docstring in __init__
       "D203",   # 1 blank line required before class docstring
       "D213",   # Multi-line docstring summary should start at the second line
+      "D401",  # First line of docstring should be in imperative mood
       "FBT",    # flake8-boolean-trap
       "FIX",    # flake8-fixme
       "ISC001", # Conflicts with formatter
+      "PLW1641", # Object does not implement `__hash__` method
     ]
 
     [tool.ruff.lint.pylint]
