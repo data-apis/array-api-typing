@@ -46,13 +46,13 @@
     { include-group = "test_runtime" },
     { include-group = "test_numpy" },
     "lefthook==1.11.14",
-    "orjson>=3.10.18; python_version<'3.14'", # used by mypy
+    "orjson>=3.11.0; python_version<'3.14'", # used by mypy
   ]
   lint = [
     "ruff==0.12.1",
   ]
   mypy = [
-    "mypy==1.16.1",
+    "mypy==1.17.0",
   ]
   test_runtime = [
     "pytest==8.4.1",
