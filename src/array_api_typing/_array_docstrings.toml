@@ -42,23 +42,6 @@ See Also:
 
 '''
 
-__iadd__ = '''
-Calculates the in-place sum for each element of an array instance with the
-respective element of the array `other`.
-
-Args:
-    other: addend array. Must be compatible with `self` (see Broadcasting).
-        Should have a numeric data type.
-
-Returns:
-    Self: `self`, after performing the in-place addition. The returned
-        array must have a data type determined by Type Promotion Rules.
-
-See Also:
-    array_api_typing.Add
-
-'''
-
 __radd__ = '''
 Calculates the sum for each element of the array `other` with the respective
 element of an array instance.
@@ -90,23 +73,6 @@ Args:
 
 Returns:
     Self: an array containing the element-wise differences. The returned
-        array must have a data type determined by Type Promotion Rules.
-
-See Also:
-    array_api_typing.Subtract
-
-'''
-
-__isub__ = '''
-Calculates the in-place difference for each element of an array instance
-with the respective element of the array `other`.
-
-Args:
-    other: subtrahend array. Must be compatible with `self` (see
-        Broadcasting). Should have a numeric data type.
-
-Returns:
-    Self: `self`, after performing the in-place subtraction. The returned
         array must have a data type determined by Type Promotion Rules.
 
 See Also:
@@ -152,23 +118,6 @@ See Also:
 
 '''
 
-__imul__ = '''
-Calculates the in-place product for each element of an array instance with
-the respective element of the array `other`.
-
-Args:
-    other: multiplicand array. Must be compatible with `self` (see
-        Broadcasting). Should have a numeric data type.
-
-Returns:
-    Self: `self`, after performing the in-place multiplication. The returned
-        array must have a data type determined by Type Promotion Rules.
-
-See Also:
-    array_api_typing.Multiply
-
-'''
-
 __rmul__ = '''
 Calculates the product for each element of the array `other` with the
 respective element of an array instance.
@@ -198,23 +147,6 @@ Returns:
     Self: an array containing the element-wise results. The returned array
         should have a floating-point data type determined by Type Promotion
         Rules.
-
-See Also:
-    array_api_typing.TrueDiv
-
-'''
-
-__itruediv__ = '''
-Calculates the in-place quotient for each element of an array instance with
-the respective element of the array `other`.
-
-Args:
-    other: divisor array. Must be compatible with `self` (see Broadcasting).
-        Should have a numeric data type.
-
-Returns:
-    Self: `self`, after performing the in-place true division. The returned
-        array must have a data type determined by Type Promotion Rules.
 
 See Also:
     array_api_typing.TrueDiv
@@ -255,24 +187,6 @@ See Also:
 
 '''
 
-__ifloordiv__ = '''
-Calculates the in-place floor division for each element of an array instance
-with the respective element of the array `other`.
-
-Args:
-    other: divisor array. Must be compatible with `self` (see Broadcasting).
-        Should have a numeric data type.
-
-Returns:
-    Self: `self`, after performing the in-place floor division. The
-        returned array must have a data type determined by Type Promotion
-        Rules.
-
-See Also:
-    array_api_typing.FloorDiv
-
-'''
-
 __rfloordiv__ = '''
 Calculates the floor division for each element of the array `other` with the
 respective element of an array instance.
@@ -288,24 +202,6 @@ Returns:
 
 See Also:
     array_api_typing.FloorDiv
-
-'''
-
-__imod__ = '''
-Calculates the in-place remainder for each element of an array instance with
-the respective element of the array `other`.
-
-Args:
-    other: divisor array. Must be compatible with `self` (see Broadcasting).
-        Should have a numeric data type.
-
-Returns:
-    Self: `self`, after performing the in-place modulo operation. The
-        returned array must have a data type determined by Type Promotion
-        Rules.
-
-See Also:
-    array_api_typing.Remainder
 
 '''
 
@@ -359,24 +255,6 @@ Args:
 Returns:
     Self: an array containing the element-wise results. The returned array
         must have a data type determined by Type Promotion Rules.
-
-'''
-
-__ipow__ = '''
-Calculates the in-place power for each element of an array instance with the
-respective element of the array `other`.
-
-Args:
-    other: exponent array. Must be compatible with `self` (see Broadcasting).
-        Should have a numeric data type.
-
-Returns:
-    Self: `self`, after performing the in-place power operation. The
-        returned array must have a data type determined by Type Promotion
-        Rules.
-
-See Also:
-    array_api_typing.Power
 
 '''
 
