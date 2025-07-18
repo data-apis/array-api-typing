@@ -8,7 +8,6 @@
 > for working with the [Python array API standard](https://data-apis.org/array-api/latest/), but it
 > may change significantly in the future.
 
-
 ## Installation
 
 ```bash
@@ -45,6 +44,7 @@ pip install -e .  # editable mode
 
 ### Quick example
 
+<!-- dprint-ignore-start -->
 ```pycon
 >>> import array_api_typing as xpt
 >>> import numpy as np
@@ -56,3 +56,4 @@ pip install -e .  # editable mode
 array([1, 2, 3])
 
 ```
+<!-- dprint-ignore-end -->
