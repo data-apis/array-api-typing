@@ -1,9 +1,10 @@
 # mypy: disable-error-code="no-redef"
 
 from types import ModuleType
-from typing import TypeAlias
+from typing import Any
 
 import numpy.array_api as np  # type: ignore[import-not-found, unused-ignore]
+from numpy import dtype
 
 import array_api_typing as xpt
 
@@ -29,7 +30,24 @@ ns: ModuleType = a_ns.__array_namespace__()
 _: xpt.HasArrayNamespace[dict[str, int]] = nparr  # not caught
 
 # =========================================================
+# `xpt.HasDType`
+
+# Note that `np.array_api` uses dtype objects, not dtype classes, so we can't
+# type annotate specific dtypes like `np.float32` or `np.int32`.
+
+_: xpt.HasDType[dtype[Any]] = nparr
+_: xpt.HasDType[dtype[Any]] = nparr_i32
+_: xpt.HasDType[dtype[Any]] = nparr_f32
+
+# =========================================================
 # `xpt.Array`
 
 # Check NamespaceT_co assignment
-a_ns: xpt.Array[ModuleType] = nparr
+a_ns: xpt.Array[Any, ModuleType] = nparr
+
+# Check DTypeT_co assignment
+# Note that `np.array_api` uses dtype objects, not dtype classes, so we can't
+# type annotate specific dtypes like `np.float32` or `np.int32`.
+_: xpt.Array[dtype[Any]] = nparr
+_: xpt.Array[dtype[Any]] = nparr_i32
+_: xpt.Array[dtype[Any]] = nparr_f32

@@ -36,7 +36,22 @@ ns: ModuleType = a_ns.__array_namespace__()
 _: xpt.HasArrayNamespace[dict[str, int]] = nparr  # not caught
 
 # =========================================================
+# `xpt.HasDType`
+
+# Check DTypeT_co assignment
+_: xpt.HasDType[Any] = nparr
+_: xpt.HasDType[np.dtype[I32]] = nparr_i32
+_: xpt.HasDType[np.dtype[F32]] = nparr_f32
+_: xpt.HasDType[np.dtype[np.bool_]] = nparr_b
+
+# =========================================================
 # `xpt.Array`
 
 # Check NamespaceT_co assignment
-a_ns: xpt.Array[ModuleType] = nparr
+a_ns: xpt.Array[Any, ModuleType] = nparr
+
+# Check DTypeT_co assignment
+_: xpt.Array[Any] = nparr
+_: xpt.Array[np.dtype[I32]] = nparr_i32
+_: xpt.Array[np.dtype[F32]] = nparr_f32
+_: xpt.Array[np.dtype[np.bool_]] = nparr_b

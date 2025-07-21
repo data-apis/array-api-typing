@@ -8,6 +8,7 @@ from typing import Literal, Protocol
 from typing_extensions import TypeVar
 
 NamespaceT_co = TypeVar("NamespaceT_co", covariant=True, default=ModuleType)
+DTypeT_co = TypeVar("DTypeT_co", covariant=True)
 
 
 class HasArrayNamespace(Protocol[NamespaceT_co]):
@@ -57,15 +58,28 @@ class HasArrayNamespace(Protocol[NamespaceT_co]):
         ...
 
 
+class HasDType(Protocol[DTypeT_co]):
+    """Protocol for array classes that have a data type attribute."""
+
+    @property
+    def dtype(self, /) -> DTypeT_co:
+        """Data type of the array elements."""
+        ...
+
+
 class Array(
     HasArrayNamespace[NamespaceT_co],
+    # ------ Attributes -------
+    HasDType[DTypeT_co],
     # -------------------------
-    Protocol[NamespaceT_co],
+    Protocol[DTypeT_co, NamespaceT_co],
 ):
     """Array API specification for array object attributes and methods.
 
-    The type is: ``Array[+NamespaceT = ModuleType] = Array[NamespaceT]`` where:
+    The type is: ``Array[+DTypeT, +NamespaceT = ModuleType] = Array[DTypeT,
+    NamespaceT]`` where:
 
+    - `DTypeT` is the data type of the array elements.
     - `NamespaceT` is the type of the array namespace. It defaults to
       `ModuleType`, which is the most common form of array namespace (e.g.,
       `numpy`, `cupy`, etc.). However, it can be any type, e.g. a
