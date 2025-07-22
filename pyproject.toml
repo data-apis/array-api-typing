@@ -27,6 +27,9 @@ classifiers = [
 ]
 dependencies = [
   "typing-extensions>=4.14.1",
+  "optype>=0.9.3; python_version < '3.11'",
+  "optype>=0.12.2; python_version >= '3.11'",
+  "tomli>=1.2.0 ; python_full_version < '3.11'",
 ]
 
 [project.urls]
@@ -121,9 +124,12 @@ ignore = [
   "D107", # Missing docstring in __init__
   "D203", # 1 blank line required before class docstring
   "D213", # Multi-line docstring summary should start at the second line
+  "D401", # First line of docstring should be in imperative mood
   "FBT", # flake8-boolean-trap
   "FIX", # flake8-fixme
   "ISC001", # Conflicts with formatter
+  "PLW1641", # Object does not implement `__hash__` method
+  "PYI041", # Use `float` instead of `int | float`
 ]
 
 [tool.ruff.lint.pylint]
@@ -137,10 +143,13 @@ allow-dunder-method-names = [
 ]
 
 [tool.ruff.lint.flake8-import-conventions]
-banned-from = ["array_api_typing"]
+banned-from = ["array_api_typing", "optype", "optype.numpy", "optype.numpy.compat"]
 
 [tool.ruff.lint.flake8-import-conventions.extend-aliases]
 array_api_typing = "xpt"
+optype = "op"
+"optype.numpy" = "onp"
+"optype.numpy.compat" = "npc"
 
 [tool.ruff.lint.isort]
 combine-as-imports = true
