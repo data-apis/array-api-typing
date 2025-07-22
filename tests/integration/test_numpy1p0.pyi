@@ -27,3 +27,9 @@ ns: ModuleType = a_ns.__array_namespace__()
 # Incorrect values are caught when using `__array_namespace__` and
 # backpropagated to the type of `a_ns`
 _: xpt.HasArrayNamespace[dict[str, int]] = nparr  # not caught
+
+# =========================================================
+# `xpt.Array`
+
+# Check NamespaceT_co assignment
+a_ns: xpt.Array[ModuleType] = nparr
