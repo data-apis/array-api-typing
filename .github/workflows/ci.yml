@@ -88,11 +88,15 @@ jobs:
           python-version: "3.11"
           activate-environment: true
 
-      - name: get major numpy version
-        id: numpy-major
+      - name: get major.minor numpy version
+        id: numpy-version
         run: |
-          version=$(echo ${{ matrix.numpy-version }} | cut -c 1)
-          echo "::set-output name=version::$version"
+          version="${{ matrix.numpy-version }}"
+          major=$(echo "$version" | cut -d. -f1)
+          minor=$(echo "$version" | cut -d. -f2)
+
+          echo "major=$major" >> $GITHUB_OUTPUT
+          echo "minor=$minor" >> $GITHUB_OUTPUT
 
       - name: install deps
         run: |
@@ -101,10 +105,29 @@ jobs:
 
       # NOTE: `uv run --with=...` will be ignored by mypy (and `--isolated` does not help)
       - name: mypy
-        run: >
-          uv run --no-sync --active
-          mypy --tb --no-incremental --cache-dir=/dev/null
-          tests/integration/test_numpy${{ steps.numpy-major.outputs.version }}.pyi
+        run: |
+          major="${{ steps.numpy-version.outputs.major }}"
+          minor="${{ steps.numpy-version.outputs.minor }}"
+
+          # Directory containing versioned test files
+          prefix="tests/integration"
+          files=""
+
+          # Find all test files matching the current major version
+          for path in $(find "$prefix" -name "test_numpy${major}p*.pyi"); do
+            # Extract file name
+            fname=$(basename "$path")
+            # Parse the minor version from the filename
+            fminor=$(echo "$fname" | sed -E "s/test_numpy${major}p([0-9]+)\.pyi/\1/")
+            # Include files where minor version ≤ NumPy's minor
+            if [ "$fminor" -le "$minor" ]; then
+              files="$files $path"
+            fi
+          done
+
+          uv run --no-sync --active \
+            mypy --tb --no-incremental --cache-dir=/dev/null \
+            $files
 
       # TODO: (based)pyright
 
