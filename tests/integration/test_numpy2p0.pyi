@@ -71,3 +71,8 @@ _: object = x_b.device
 _: xpt.Array[np.dtype[F32]] = x_f32.mT
 _: xpt.Array[np.dtype[I32]] = x_i32.mT
 _: xpt.Array[np.dtype[B]] = x_b.mT
+
+# Check Attribute `.ndim`
+_: int = x_f32.ndim
+_: int = x_i32.ndim
+_: int = x_b.ndim

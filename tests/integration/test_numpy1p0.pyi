@@ -63,3 +63,7 @@ _: object = x_i32.device
 # Check Attribute `.mT`
 _: xpt.Array[dtype[Any]] = x_f32.mT
 _: xpt.Array[dtype[Any]] = x_i32.mT
+
+# Check Attribute `.ndim`
+_: int = x_f32.ndim
+_: int = x_i32.ndim
