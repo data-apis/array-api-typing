@@ -61,3 +61,8 @@ x_b: xpt.Array[np.dtype[B]] = nparr_b
 _: np.dtype[F32] = x_f32.dtype
 _: np.dtype[I32] = x_i32.dtype
 _: np.dtype[B] = x_b.dtype
+
+# Check Attribute `.device`
+_: object = x_f32.device
+_: object = x_i32.device
+_: object = x_b.device

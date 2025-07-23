@@ -55,3 +55,7 @@ x_i32: xpt.Array[dtype[Any]] = nparr_i32
 # Check Attribute `.dtype`
 _: dtype[Any] = x_f32.dtype
 _: dtype[Any] = x_i32.dtype
+
+# Check Attribute `.device`
+_: object = x_f32.device
+_: object = x_i32.device
