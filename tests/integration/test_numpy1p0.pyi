@@ -49,5 +49,9 @@ a_ns: xpt.Array[Any, ModuleType] = nparr
 # Note that `np.array_api` uses dtype objects, not dtype classes, so we can't
 # type annotate specific dtypes like `np.float32` or `np.int32`.
 _: xpt.Array[dtype[Any]] = nparr
-_: xpt.Array[dtype[Any]] = nparr_i32
-_: xpt.Array[dtype[Any]] = nparr_f32
+x_f32: xpt.Array[dtype[Any]] = nparr_f32
+x_i32: xpt.Array[dtype[Any]] = nparr_i32
+
+# Check Attribute `.dtype`
+_: dtype[Any] = x_f32.dtype
+_: dtype[Any] = x_i32.dtype
