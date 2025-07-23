@@ -1,6 +1,7 @@
 __all__ = (
     "Array",
     "HasArrayNamespace",
+    "HasDType",
 )
 
 from types import ModuleType
@@ -68,9 +69,10 @@ class HasDType(Protocol[DTypeT_co]):
 
 
 class Array(
-    HasArrayNamespace[NamespaceT_co],
     # ------ Attributes -------
     HasDType[DTypeT_co],
+    # ------- Methods ---------
+    HasArrayNamespace[NamespaceT_co],
     # -------------------------
     Protocol[DTypeT_co, NamespaceT_co],
 ):
