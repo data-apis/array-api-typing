@@ -63,3 +63,7 @@ assert_type(x_i32.device, object)
 # Check Attribute `.mT`
 assert_type(x_f32.mT, xpt.Array[dtype[Any]])
 assert_type(x_i32.mT, xpt.Array[dtype[Any]])
+
+# Check Attribute `.ndim`
+assert_type(x_f32.ndim, int)
+assert_type(x_i32.ndim, int)
