@@ -62,6 +62,14 @@ _: xpt.HasMatrixTranspose = nparr_f32
 _: xpt.HasMatrixTranspose = nparr_b
 
 # =========================================================
+# `xpt.HasNDim`
+
+_: xpt.HasNDim = nparr
+_: xpt.HasNDim = nparr_i32
+_: xpt.HasNDim = nparr_f32
+_: xpt.HasNDim = nparr_b
+
+# =========================================================
 # `xpt.Array`
 
 # Check NamespaceT_co assignment

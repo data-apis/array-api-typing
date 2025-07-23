@@ -4,6 +4,7 @@ __all__ = (
     "HasDType",
     "HasDevice",
     "HasMatrixTranspose",
+    "HasNDim",
 )
 
 from types import ModuleType
@@ -96,6 +97,20 @@ class HasMatrixTranspose(Protocol):
                 having shape `(..., M, N)`, the returned array must have shape
                 `(..., N, M))`.  The returned array must have the same data type
                 as the original array.
+
+        """
+        ...
+
+
+class HasNDim(Protocol):
+    """Protocol for array classes that have a number of dimensions attribute."""
+
+    @property
+    def ndim(self) -> int:
+        """Number of array dimensions (axes).
+
+        Returns:
+            int: number of array dimensions (axes).
 
         """
         ...
