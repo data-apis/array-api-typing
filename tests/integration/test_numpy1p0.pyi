@@ -55,3 +55,7 @@ x_i32: xpt.Array[dtype[Any]] = nparr_i32
 # Check Attribute `.dtype`
 assert_type(x_f32.dtype, dtype[Any])
 assert_type(x_i32.dtype, dtype[Any])
+
+# Check Attribute `.device`
+assert_type(x_f32.device, object)
+assert_type(x_i32.device, object)

@@ -61,3 +61,8 @@ x_b: xpt.Array[np.dtype[B]] = nparr_b
 assert_type(x_f32.dtype, np.dtype[F32])
 assert_type(x_i32.dtype, np.dtype[I32])
 assert_type(x_b.dtype, np.dtype[B])
+
+# Check Attribute `.device`
+assert_type(x_f32.device, object)
+assert_type(x_i32.device, object)
+assert_type(x_b.device, object)

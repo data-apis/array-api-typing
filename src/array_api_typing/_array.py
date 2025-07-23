@@ -2,6 +2,7 @@ __all__ = (
     "Array",
     "HasArrayNamespace",
     "HasDType",
+    "HasDevice",
 )
 
 from types import ModuleType
@@ -68,9 +69,19 @@ class HasDType(Protocol[DTypeT_co]):
         ...
 
 
+class HasDevice(Protocol):
+    """Protocol for array classes that have a device attribute."""
+
+    @property
+    def device(self) -> object:  # TODO: more specific type
+        """Hardware device the array data resides on."""
+        ...
+
+
 class Array(
     # ------ Attributes -------
     HasDType[DTypeT_co],
+    HasDevice,
     # ------- Methods ---------
     HasArrayNamespace[NamespaceT_co],
     # -------------------------
