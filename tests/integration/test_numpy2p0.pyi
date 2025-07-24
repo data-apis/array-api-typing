@@ -11,12 +11,13 @@ import array_api_typing as xpt
 # DType aliases
 F32: TypeAlias = np.float32
 I32: TypeAlias = np.int32
+B: TypeAlias = np.bool_
 
 # Define NDArrays against which we can test the protocols
 nparr: npt.NDArray[Any]
 nparr_i32: npt.NDArray[I32]
 nparr_f32: npt.NDArray[F32]
-nparr_b: npt.NDArray[np.bool_]
+nparr_b: npt.NDArray[B]
 
 # =========================================================
 # `xpt.HasArrayNamespace`
@@ -42,7 +43,7 @@ _: xpt.HasArrayNamespace[dict[str, int]] = nparr  # not caught
 _: xpt.HasDType[Any] = nparr
 _: xpt.HasDType[np.dtype[I32]] = nparr_i32
 _: xpt.HasDType[np.dtype[F32]] = nparr_f32
-_: xpt.HasDType[np.dtype[np.bool_]] = nparr_b
+_: xpt.HasDType[np.dtype[B]] = nparr_b
 
 # =========================================================
 # `xpt.Array`
@@ -52,6 +53,41 @@ a_ns: xpt.Array[Any, ModuleType] = nparr
 
 # Check DTypeT_co assignment
 _: xpt.Array[Any] = nparr
-_: xpt.Array[np.dtype[I32]] = nparr_i32
-_: xpt.Array[np.dtype[F32]] = nparr_f32
-_: xpt.Array[np.dtype[np.bool_]] = nparr_b
+x_f32: xpt.Array[np.dtype[F32]] = nparr_f32
+x_i32: xpt.Array[np.dtype[I32]] = nparr_i32
+x_b: xpt.Array[np.dtype[B]] = nparr_b
+
+# Check Attribute `.dtype`
+_: np.dtype[F32] = x_f32.dtype
+_: np.dtype[I32] = x_i32.dtype
+_: np.dtype[B] = x_b.dtype
+
+# Check Attribute `.device`
+_: object = x_f32.device
+_: object = x_i32.device
+_: object = x_b.device
+
+# Check Attribute `.mT`
+_: xpt.Array[np.dtype[F32]] = x_f32.mT
+_: xpt.Array[np.dtype[I32]] = x_i32.mT
+_: xpt.Array[np.dtype[B]] = x_b.mT
+
+# Check Attribute `.ndim`
+_: int = x_f32.ndim
+_: int = x_i32.ndim
+_: int = x_b.ndim
+
+# Check Attribute `.shape`
+_: tuple[int | None, ...] = x_f32.shape
+_: tuple[int | None, ...] = x_i32.shape
+_: tuple[int | None, ...] = x_b.shape
+
+# Check Attribute `.size`
+_: int | None = x_f32.size
+_: int | None = x_i32.size
+_: int | None = x_b.size
+
+# Check Attribute `.T`
+_: xpt.Array[np.dtype[F32]] = x_f32.T
+_: xpt.Array[np.dtype[I32]] = x_i32.T
+_: xpt.Array[np.dtype[B]] = x_b.T
