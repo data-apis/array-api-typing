@@ -65,6 +65,9 @@ test_numpy = [
 pyright = [
   "pyright>=1.1.403",
 ]
+basedmypy = [
+  "basedmypy>=2.10.0",
+]
 
 [tool.hatch]
 version.source = "vcs"

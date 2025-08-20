@@ -127,6 +127,14 @@ jobs:
             mypy --tb --no-incremental --cache-dir=/dev/null \
             ${{ steps.collect-files.outputs.files }}
 
+      - name: basedmypy
+        run: |
+          uv sync --no-editable --group=basedmypy
+          uv pip install numpy==${{ matrix.numpy-version }}
+          uv run --no-sync --active \
+            mypy --tb --no-incremental --cache-dir=/dev/null \
+            ${{ steps.collect-files.outputs.files }}
+
       - name: pyright
         run: |
           uv sync --no-editable --group=pyright

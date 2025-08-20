@@ -1,4 +1,4 @@
-# mypy: disable-error-code="no-redef"
+# mypy: disable-error-code="no-redef, explicit-any"
 
 from types import ModuleType
 from typing import Any, TypeAlias
