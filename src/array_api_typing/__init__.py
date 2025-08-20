@@ -4,6 +4,7 @@ __all__ = (
     "Array",
     "HasArrayNamespace",
     "HasDType",
+    "HasDevice",
     "HasMatrixTranspose",
     "HasNDim",
     "HasShape",
@@ -16,6 +17,7 @@ __all__ = (
 from ._array import (
     Array,
     HasArrayNamespace,
+    HasDevice,
     HasDType,
     HasMatrixTranspose,
     HasNDim,

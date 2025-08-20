@@ -49,7 +49,7 @@ _: xpt.HasDType[np.dtype[B]] = nparr_b
 # `xpt.Array`
 
 # Check NamespaceT_co assignment
-a_ns: xpt.Array[Any, ModuleType] = nparr
+a_ns: xpt.Array[Any, Any, ModuleType] = nparr
 
 # Check DTypeT_co assignment
 _: xpt.Array[Any] = nparr
@@ -61,6 +61,13 @@ x_b: xpt.Array[np.dtype[B]] = nparr_b
 assert_type(x_f32.dtype, np.dtype[F32])
 assert_type(x_i32.dtype, np.dtype[I32])
 assert_type(x_b.dtype, np.dtype[B])
+
+# Check DeviceT_co assignment
+x_gooddevice: xpt.Array[Any, object, Any] = nparr
+assert_type(x_gooddevice.device, object)
+
+x_baddevice: xpt.Array[Any, int, Any] = nparr  # type: ignore[assignment]
+_: int = x_baddevice.device
 
 # Check Attribute `.device`
 assert_type(x_f32.device, object)

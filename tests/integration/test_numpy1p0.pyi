@@ -43,7 +43,7 @@ _: xpt.HasDType[dtype[Any]] = nparr_f32
 # `xpt.Array`
 
 # Check NamespaceT_co assignment
-a_ns: xpt.Array[Any, ModuleType] = nparr
+a_ns: xpt.Array[Any, Any, ModuleType] = nparr
 
 # Check DTypeT_co assignment
 # Note that `np.array_api` uses dtype objects, not dtype classes, so we can't

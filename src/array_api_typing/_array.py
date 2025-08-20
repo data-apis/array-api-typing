@@ -16,6 +16,7 @@ from typing_extensions import TypeVar
 
 NamespaceT_co = TypeVar("NamespaceT_co", covariant=True, default=ModuleType)
 DTypeT_co = TypeVar("DTypeT_co", covariant=True)
+DeviceT_co = TypeVar("DeviceT_co", covariant=True, default=object)
 
 
 class HasArrayNamespace(Protocol[NamespaceT_co]):
@@ -74,11 +75,11 @@ class HasDType(Protocol[DTypeT_co]):
         ...
 
 
-class HasDevice(Protocol):
+class HasDevice(Protocol[DeviceT_co]):
     """Protocol for array classes that have a device attribute."""
 
     @property
-    def device(self) -> object:  # TODO: more specific type
+    def device(self) -> DeviceT_co:
         """Hardware device the array data resides on."""
         ...
 
@@ -191,7 +192,7 @@ class HasTranspose(Protocol):
 class Array(
     # ------ Attributes -------
     HasDType[DTypeT_co],
-    HasDevice,
+    HasDevice[DeviceT_co],
     HasMatrixTranspose,
     HasNDim,
     HasShape,
@@ -200,14 +201,18 @@ class Array(
     # ------- Methods ---------
     HasArrayNamespace[NamespaceT_co],
     # -------------------------
-    Protocol[DTypeT_co, NamespaceT_co],
+    Protocol[DTypeT_co, DeviceT_co, NamespaceT_co],
 ):
     """Array API specification for array object attributes and methods.
 
-    The type is: ``Array[+DTypeT, +NamespaceT = ModuleType] = Array[DTypeT,
-    NamespaceT]`` where:
+    The type is: ``Array[+DTypeT, +DeviceT = object, +NamespaceT = ModuleType] =
+    Array[DTypeT, DeviceT, NamespaceT]`` where:
 
     - `DTypeT` is the data type of the array elements.
+    - `DeviceT` is the type of the device attribute. It defaults to `object` to
+      enable skipping device specification. Array objects supporting device
+      management can specify a more specific type if they use types (as opposed
+      to object instances) to distinguish between different devices.
     - `NamespaceT` is the type of the array namespace. It defaults to
       `ModuleType`, which is the most common form of array namespace (e.g.,
       `numpy`, `cupy`, etc.). However, it can be any type, e.g. a
