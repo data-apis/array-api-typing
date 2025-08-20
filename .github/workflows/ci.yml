@@ -98,36 +98,41 @@ jobs:
           echo "major=$major" >> $GITHUB_OUTPUT
           echo "minor=$minor" >> $GITHUB_OUTPUT
 
-      - name: install deps
-        run: |
-          uv sync --no-editable --group=mypy
-          uv pip install numpy==${{ matrix.numpy-version }}
-
-      # NOTE: `uv run --with=...` will be ignored by mypy (and `--isolated` does not help)
-      - name: mypy
+      - name: collect test files
+        id: collect-files
         run: |
           major="${{ steps.numpy-version.outputs.major }}"
           minor="${{ steps.numpy-version.outputs.minor }}"
 
-          # Directory containing versioned test files
           prefix="tests/integration"
           files=""
 
-          # Find all test files matching the current major version
-          for path in $(find "$prefix" -name "test_numpy${major}p*.pyi"); do
-            # Extract file name
+          while IFS= read -r -d '' path; do
             fname=$(basename "$path")
-            # Parse the minor version from the filename
             fminor=$(echo "$fname" | sed -E "s/test_numpy${major}p([0-9]+)\.pyi/\1/")
-            # Include files where minor version ≤ NumPy's minor
             if [ "$fminor" -le "$minor" ]; then
               files="$files $path"
             fi
-          done
+          done < <(find "$prefix" -name "test_numpy${major}p*.pyi" -print0)
 
+          files="${files# }"
+          echo "files=$files" >> "$GITHUB_OUTPUT"
+
+      # NOTE: `uv run --with=...` will be ignored by mypy (and `--isolated` does not help)
+      - name: mypy
+        run: |
+          uv sync --no-editable --group=mypy
+          uv pip install numpy==${{ matrix.numpy-version }}
           uv run --no-sync --active \
             mypy --tb --no-incremental --cache-dir=/dev/null \
-            $files
+            ${{ steps.collect-files.outputs.files }}
+
+      - name: pyright
+        run: |
+          uv sync --no-editable --group=pyright
+          uv pip install numpy==${{ matrix.numpy-version }}
+          uv run --no-sync --active \
+            pyright ${{ steps.collect-files.outputs.files }}
 
       # TODO: (based)pyright
 
