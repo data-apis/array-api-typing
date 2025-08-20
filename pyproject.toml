@@ -68,6 +68,9 @@ pyright = [
 basedmypy = [
   "basedmypy>=2.10.0",
 ]
+test-dask = [
+  "dask>=2025.7.0",
+]
 
 [tool.hatch]
 version.source = "vcs"

@@ -144,5 +144,47 @@ jobs:
 
       # TODO: (based)pyright
 
+  test_integration_dask:
+    name: integration tests (dask)
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        dask-version: ["2025.7.0"]
+
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - uses: astral-sh/setup-uv@d9e0f98d3fc6adb07d1e3d37f3043649ddad06a1 # v6.5.0
+        with:
+          python-version: "3.11"
+          activate-environment: true
+
+      # NOTE: `uv run --with=...` will be ignored by mypy (and `--isolated` does not help)
+      - name: mypy
+        run: |
+          uv sync --no-editable --group=mypy
+          uv pip install dask==${{ matrix.dask-version }}
+          uv run --no-sync --active \
+            mypy --tb --no-incremental --cache-dir=/dev/null \
+            tests/integration/test_dask.pyi
+
+      - name: basedmypy
+        run: |
+          uv sync --no-editable --group=basedmypy
+          uv pip install dask==${{ matrix.dask-version }}
+          uv run --no-sync --active \
+            mypy --tb --no-incremental --cache-dir=/dev/null \
+            tests/integration/test_dask.pyi
+
+      - name: pyright
+        run: |
+          uv sync --no-editable --group=pyright
+          uv pip install dask==${{ matrix.dask-version }}
+          uv run --no-sync --active \
+            tests/integration/test_dask.pyi
+
+      # TODO: (based)pyright
+
   # TODO: integration tests for array-api-strict
-  # TODO: integration tests for 3rd party libs such as cupy, pytorch, tensorflow, dask, etc.
+  # TODO: integration tests for 3rd party libs such as cupy, pytorch, tensorflow, etc.
