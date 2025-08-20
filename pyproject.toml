@@ -68,6 +68,9 @@ pyright = [
 basedmypy = [
   "basedmypy>=2.10.0",
 ]
+test-jax = [
+  "jax>=0.6.2",
+]
 
 [tool.hatch]
 version.source = "vcs"
