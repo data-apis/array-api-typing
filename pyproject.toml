@@ -62,6 +62,15 @@ test_runtime = [
 test_numpy = [
   "numpy>=1.25",
 ]
+pyright = [
+  "pyright>=1.1.403",
+]
+basedmypy = [
+  "basedmypy>=2.10.0",
+]
+test-dask = [
+  "dask>=2025.7.0",
+]
 
 [tool.hatch]
 version.source = "vcs"
