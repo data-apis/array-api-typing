@@ -134,7 +134,12 @@ jobs:
           uv run --no-sync --active \
             pyright ${{ steps.collect-files.outputs.files }}
 
-      # TODO: (based)pyright
+      - name: basedpyright
+        run: |
+          uv sync --no-editable --group=basedpyright
+          uv pip install numpy==${{ matrix.numpy-version }}
+          uv run --no-sync --active \
+            basedpyright ${{ steps.collect-files.outputs.files }}
 
   # TODO: integration tests for array-api-strict
   # TODO: integration tests for 3rd party libs such as cupy, pytorch, tensorflow, dask, etc.
