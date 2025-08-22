@@ -1,6 +1,16 @@
-from typing import Protocol
+from typing import Protocol, TypeVar
 
-__all__ = ("ArrayNamespace",)
+from ._array import HasDType
+
+__all__ = (
+    "ArrayNamespace",
+    # Data Type Functions
+    "DoesAsType",
+    "HasAsType",
+)
+
+DTypeT = TypeVar("DTypeT")
+ToDTypeT = TypeVar("ToDTypeT")
 
 # ===================================================================
 # Creation Functions
@@ -9,8 +19,47 @@ __all__ = ("ArrayNamespace",)
 
 # ===================================================================
 # Data Type Functions
-# TODO: astype, broadcast_arrays, broadcast_to, can_cast, finfo, iinfo,
+# TODO: broadcast_arrays, broadcast_to, can_cast, finfo, iinfo,
 # result_type
+
+
+class DoesAsType(Protocol):
+    """Copies an array to a specified data type irrespective of Type Promotion Rules rules.
+
+    Note:
+        Casting floating-point ``NaN`` and ``infinity`` values to integral data
+        types is not specified and is implementation-dependent.
+
+    Note:
+        When casting a boolean input array to a numeric data type, a value of
+        `True` must cast to a numeric value equal to ``1``, and a value of
+        `False` must cast to a numeric value equal to ``0``.
+
+        When casting a numeric input array to bool, a value of ``0`` must cast
+        to `False`, and a non-zero value must cast to `True`.
+
+    Args:
+        x: The array to cast.
+        dtype: desired data type.
+        copy: specifies whether to copy an array when the specified `dtype`
+            matches the data type of the input array `x`. If `True`, a newly
+            allocated array must always be returned. If `False` and the
+            specified `dtype` matches the data type of the input array, the
+            input array must be returned; otherwise, a newly allocated must be
+            returned. Default: `True`.
+
+    """  # noqa: E501
+
+    def __call__(
+        self, x: HasDType[DTypeT], dtype: ToDTypeT, /, *, copy: bool = True
+    ) -> HasDType[ToDTypeT]: ...
+
+
+class HasAsType(Protocol):
+    """Protocol for namespaces that have an ``astype`` function."""
+
+    astype: DoesAsType
+
 
 # ===================================================================
 # Element-wise Functions
@@ -55,5 +104,9 @@ __all__ = ("ArrayNamespace",)
 # Full Namespace
 
 
-class ArrayNamespace(Protocol):
+class ArrayNamespace(
+    # Data Type Functions
+    HasAsType,
+    Protocol,
+):
     """Protocol for an Array API-compatible namespace."""

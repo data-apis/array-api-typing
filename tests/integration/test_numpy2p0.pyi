@@ -91,3 +91,9 @@ assert_type(x_b.size, int | None)
 assert_type(x_f32.T, xpt.Array[np.dtype[F32]])
 assert_type(x_i32.T, xpt.Array[np.dtype[I32]])
 assert_type(x_b.T, xpt.Array[np.dtype[B]])
+
+##############################################################################
+# Tests on Namespace Functions
+
+_: xpt.DoesAsType = np.astype
+_: xpt.HasAsType = np

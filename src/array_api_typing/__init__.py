@@ -14,6 +14,8 @@ __all__ = (  # noqa: RUF022
     # ==================
     # Namespace
     "ArrayNamespace",
+    "DoesAsType",
+    "HasAsType",
     # ==================
     "__version__",
     "__version_tuple__",
@@ -29,5 +31,5 @@ from ._array import (
     HasSize,
     HasTranspose,
 )
-from ._namespace import ArrayNamespace
+from ._namespace import ArrayNamespace, DoesAsType, HasAsType
 from ._version import version as __version__, version_tuple as __version_tuple__
