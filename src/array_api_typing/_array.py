@@ -1,14 +1,22 @@
 __all__ = (
     "Array",
     "HasArrayNamespace",
+    "HasDType",
+    "HasDevice",
+    "HasMatrixTranspose",
+    "HasNDim",
+    "HasShape",
+    "HasSize",
+    "HasTranspose",
 )
 
 from types import ModuleType
-from typing import Literal, Protocol
+from typing import Literal, Protocol, Self
 from typing_extensions import TypeVar
 
 NamespaceT_co = TypeVar("NamespaceT_co", covariant=True, default=ModuleType)
 DTypeT_co = TypeVar("DTypeT_co", covariant=True)
+DeviceT_co = TypeVar("DeviceT_co", covariant=True, default=object)
 
 
 class HasArrayNamespace(Protocol[NamespaceT_co]):
@@ -67,19 +75,144 @@ class HasDType(Protocol[DTypeT_co]):
         ...
 
 
+class HasDevice(Protocol[DeviceT_co]):
+    """Protocol for array classes that have a device attribute."""
+
+    @property
+    def device(self) -> DeviceT_co:
+        """Hardware device the array data resides on."""
+        ...
+
+
+class HasMatrixTranspose(Protocol):
+    """Protocol for array classes that have a matrix transpose attribute."""
+
+    @property
+    def mT(self) -> Self:  # noqa: N802
+        """Transpose of a matrix (or a stack of matrices).
+
+        If an array instance has fewer than two dimensions, an error should be
+        raised.
+
+        Returns:
+            Self: array whose last two dimensions (axes) are permuted in reverse
+                order relative to original array (i.e., for an array instance
+                having shape `(..., M, N)`, the returned array must have shape
+                `(..., N, M))`.  The returned array must have the same data type
+                as the original array.
+
+        """
+        ...
+
+
+class HasNDim(Protocol):
+    """Protocol for array classes that have a number of dimensions attribute."""
+
+    @property
+    def ndim(self) -> int:
+        """Number of array dimensions (axes).
+
+        Returns:
+            int: number of array dimensions (axes).
+
+        """
+        ...
+
+
+class HasShape(Protocol):
+    """Protocol for array classes that have a shape attribute."""
+
+    @property
+    def shape(self) -> tuple[int | None, ...]:
+        """Shape of the array.
+
+        Returns:
+            tuple[int | None, ...]: array dimensions. An array dimension must be None
+                if and only if a dimension is unknown.
+
+        Notes:
+            For array libraries having graph-based computational models, array
+            dimensions may be unknown due to data-dependent operations (e.g.,
+            boolean indexing; `A[:, B > 0]`) and thus cannot be statically
+            resolved without knowing array contents.
+
+        """
+        ...
+
+
+class HasSize(Protocol):
+    """Protocol for array classes that have a size attribute."""
+
+    @property
+    def size(self) -> int | None:
+        """Number of elements in an array.
+
+        Returns:
+            int | None: number of elements in an array. The returned value must
+                be `None` if and only if one or more array dimensions are
+                unknown.
+
+        Notes:
+            This must equal the product of the array's dimensions.
+
+        """
+        ...
+
+
+class HasTranspose(Protocol):
+    """Protocol for array classes that support the transpose operation."""
+
+    @property
+    def T(self) -> Self:  # noqa: N802
+        """Transpose of the array.
+
+        The array instance must be two-dimensional. If the array instance is not
+        two-dimensional, an error should be raised.
+
+        Returns:
+            Self: two-dimensional array whose first and last dimensions (axes)
+                are permuted in reverse order relative to original array. The
+                returned array must have the same data type as the original
+                array.
+
+        Notes:
+            Limiting the transpose to two-dimensional arrays (matrices) deviates
+            from the NumPy et al practice of reversing all axes for arrays
+            having more than two-dimensions. This is intentional, as reversing
+            all axes was found to be problematic (e.g., conflicting with the
+            mathematical definition of a transpose which is limited to matrices;
+            not operating on batches of matrices; et cetera). In order to
+            reverse all axes, one is recommended to use the functional
+            `PermuteDims` interface found in this specification.
+
+        """
+        ...
+
+
 class Array(
-    HasArrayNamespace[NamespaceT_co],
     # ------ Attributes -------
     HasDType[DTypeT_co],
+    HasDevice[DeviceT_co],
+    HasMatrixTranspose,
+    HasNDim,
+    HasShape,
+    HasSize,
+    HasTranspose,
+    # ------- Methods ---------
+    HasArrayNamespace[NamespaceT_co],
     # -------------------------
-    Protocol[DTypeT_co, NamespaceT_co],
+    Protocol[DTypeT_co, DeviceT_co, NamespaceT_co],
 ):
     """Array API specification for array object attributes and methods.
 
-    The type is: ``Array[+DTypeT, +NamespaceT = ModuleType] = Array[DTypeT,
-    NamespaceT]`` where:
+    The type is: ``Array[+DTypeT, +DeviceT = object, +NamespaceT = ModuleType] =
+    Array[DTypeT, DeviceT, NamespaceT]`` where:
 
     - `DTypeT` is the data type of the array elements.
+    - `DeviceT` is the type of the device attribute. It defaults to `object` to
+      enable skipping device specification. Array objects supporting device
+      management can specify a more specific type if they use types (as opposed
+      to object instances) to distinguish between different devices.
     - `NamespaceT` is the type of the array namespace. It defaults to
       `ModuleType`, which is the most common form of array namespace (e.g.,
       `numpy`, `cupy`, etc.). However, it can be any type, e.g. a
