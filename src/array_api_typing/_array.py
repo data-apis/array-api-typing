@@ -2,6 +2,7 @@ __all__ = (
     "Array",
     "HasArrayNamespace",
     "HasDType",
+    "HasDevice",
 )
 
 from types import ModuleType
@@ -10,6 +11,7 @@ from typing_extensions import TypeVar
 
 NamespaceT_co = TypeVar("NamespaceT_co", covariant=True, default=ModuleType)
 DTypeT_co = TypeVar("DTypeT_co", covariant=True)
+DeviceT_co = TypeVar("DeviceT_co", covariant=True, default=object)
 
 
 class HasArrayNamespace(Protocol[NamespaceT_co]):
@@ -65,6 +67,15 @@ class HasDType(Protocol[DTypeT_co]):
     @property
     def dtype(self, /) -> DTypeT_co:
         """Data type of the array elements."""
+        ...
+
+
+class HasDevice(Protocol[DeviceT_co]):
+    """Protocol for array classes that have a device attribute."""
+
+    @property
+    def device(self) -> DeviceT_co:
+        """Hardware device the array data resides on."""
         ...
 
 

@@ -126,6 +126,8 @@ ignore = [
   "FIX", # flake8-fixme
   "ISC001", # Conflicts with formatter
   "PYI041", # Use `float` instead of `int | float`
+  "TD002", # Missing author in TODO
+  "TD003", # Missing issue link for this TODO
 ]
 
 [tool.ruff.lint.pydocstyle]

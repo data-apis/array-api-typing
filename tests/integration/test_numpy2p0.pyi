@@ -46,6 +46,14 @@ _: xpt.HasDType[np.dtype[F32]] = nparr_f32
 _: xpt.HasDType[np.dtype[B]] = nparr_b
 
 # =========================================================
+# `xpt.HasDevice`
+
+_: xpt.HasDevice = nparr
+_: xpt.HasDevice = nparr_i32
+_: xpt.HasDevice = nparr_f32
+_: xpt.HasDevice = nparr_b
+
+# =========================================================
 # `xpt.Array`
 
 # Check NamespaceT_co assignment
