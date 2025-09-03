@@ -54,6 +54,14 @@ _: xpt.HasDevice = nparr_f32
 _: xpt.HasDevice = nparr_b
 
 # =========================================================
+# `xpt.HasMatrixTranspose`
+
+_: xpt.HasMatrixTranspose = nparr
+_: xpt.HasMatrixTranspose = nparr_i32
+_: xpt.HasMatrixTranspose = nparr_f32
+_: xpt.HasMatrixTranspose = nparr_b
+
+# =========================================================
 # `xpt.Array`
 
 # Check NamespaceT_co assignment
