@@ -1,4 +1,4 @@
-# mypy: disable-error-code="no-redef"
+# mypy: disable-error-code="no-redef, explicit-any"
 
 from types import ModuleType
 from typing import Any, TypeAlias
@@ -22,36 +22,32 @@ nparr_b: npt.NDArray[np.bool_]
 # `xpt.HasArrayNamespace`
 
 # Check assignment
-_: xpt.HasArrayNamespace[ModuleType] = nparr
-_: xpt.HasArrayNamespace[ModuleType] = nparr_i32
-_: xpt.HasArrayNamespace[ModuleType] = nparr_f32
-_: xpt.HasArrayNamespace[ModuleType] = nparr_b
+_001: xpt.HasArrayNamespace[ModuleType] = nparr
+_002: xpt.HasArrayNamespace[ModuleType] = nparr_i32
+_003: xpt.HasArrayNamespace[ModuleType] = nparr_f32
+_004: xpt.HasArrayNamespace[ModuleType] = nparr_b
 
 # Check `__array_namespace__` method
 a_ns: xpt.HasArrayNamespace[ModuleType] = nparr
 ns: ModuleType = a_ns.__array_namespace__()
 
-# Incorrect values are caught when using `__array_namespace__` and
-# backpropagated to the type of `a_ns`
-_: xpt.HasArrayNamespace[dict[str, int]] = nparr  # not caught
-
 # =========================================================
 # `xpt.HasDType`
 
 # Check DTypeT_co assignment
-_: xpt.HasDType[Any] = nparr
-_: xpt.HasDType[np.dtype[I32]] = nparr_i32
-_: xpt.HasDType[np.dtype[F32]] = nparr_f32
-_: xpt.HasDType[np.dtype[np.bool_]] = nparr_b
+_005: xpt.HasDType[Any] = nparr
+_006: xpt.HasDType[np.dtype[I32]] = nparr_i32
+_007: xpt.HasDType[np.dtype[F32]] = nparr_f32
+_008: xpt.HasDType[np.dtype[np.bool_]] = nparr_b
 
 # =========================================================
 # `xpt.Array`
 
 # Check NamespaceT_co assignment
-a_ns: xpt.Array[Any, ModuleType] = nparr
+x_ns: xpt.Array[Any, ModuleType] = nparr
 
 # Check DTypeT_co assignment
-_: xpt.Array[Any] = nparr
-_: xpt.Array[np.dtype[I32]] = nparr_i32
-_: xpt.Array[np.dtype[F32]] = nparr_f32
-_: xpt.Array[np.dtype[np.bool_]] = nparr_b
+_009: xpt.Array[Any] = nparr
+_010: xpt.Array[np.dtype[I32]] = nparr_i32
+_011: xpt.Array[np.dtype[F32]] = nparr_f32
+_012: xpt.Array[np.dtype[np.bool_]] = nparr_b
