@@ -1,7 +1,7 @@
 # mypy: disable-error-code="no-redef"
 
 from types import ModuleType
-from typing import Any, TypeAlias
+from typing import Any, TypeAlias, assert_type
 
 import numpy as np
 import numpy.typing as npt
@@ -11,12 +11,13 @@ import array_api_typing as xpt
 # DType aliases
 F32: TypeAlias = np.float32
 I32: TypeAlias = np.int32
+B: TypeAlias = np.bool_
 
 # Define NDArrays against which we can test the protocols
 nparr: npt.NDArray[Any]
 nparr_i32: npt.NDArray[I32]
 nparr_f32: npt.NDArray[F32]
-nparr_b: npt.NDArray[np.bool_]
+nparr_b: npt.NDArray[B]
 
 # =========================================================
 # `xpt.HasArrayNamespace`
@@ -42,16 +43,58 @@ _: xpt.HasArrayNamespace[dict[str, int]] = nparr  # not caught
 _: xpt.HasDType[Any] = nparr
 _: xpt.HasDType[np.dtype[I32]] = nparr_i32
 _: xpt.HasDType[np.dtype[F32]] = nparr_f32
-_: xpt.HasDType[np.dtype[np.bool_]] = nparr_b
+_: xpt.HasDType[np.dtype[B]] = nparr_b
 
 # =========================================================
 # `xpt.Array`
 
 # Check NamespaceT_co assignment
-a_ns: xpt.Array[Any, ModuleType] = nparr
+a_ns: xpt.Array[Any, Any, ModuleType] = nparr
 
 # Check DTypeT_co assignment
 _: xpt.Array[Any] = nparr
-_: xpt.Array[np.dtype[I32]] = nparr_i32
-_: xpt.Array[np.dtype[F32]] = nparr_f32
-_: xpt.Array[np.dtype[np.bool_]] = nparr_b
+x_f32: xpt.Array[np.dtype[F32]] = nparr_f32
+x_i32: xpt.Array[np.dtype[I32]] = nparr_i32
+x_b: xpt.Array[np.dtype[B]] = nparr_b
+
+# Check Attribute `.dtype`
+assert_type(x_f32.dtype, np.dtype[F32])
+assert_type(x_i32.dtype, np.dtype[I32])
+assert_type(x_b.dtype, np.dtype[B])
+
+# Check DeviceT_co assignment
+x_gooddevice: xpt.Array[Any, object, Any] = nparr
+assert_type(x_gooddevice.device, object)
+
+x_baddevice: xpt.Array[Any, int, Any] = nparr  # type: ignore[assignment]
+_: int = x_baddevice.device
+
+# Check Attribute `.device`
+assert_type(x_f32.device, object)
+assert_type(x_i32.device, object)
+assert_type(x_b.device, object)
+
+# Check Attribute `.mT`
+assert_type(x_f32.mT, xpt.Array[np.dtype[F32]])
+assert_type(x_i32.mT, xpt.Array[np.dtype[I32]])
+assert_type(x_b.mT, xpt.Array[np.dtype[B]])
+
+# Check Attribute `.ndim`
+assert_type(x_f32.ndim, int)
+assert_type(x_i32.ndim, int)
+assert_type(x_b.ndim, int)
+
+# Check Attribute `.shape`
+assert_type(x_f32.shape, tuple[int | None, ...])
+assert_type(x_i32.shape, tuple[int | None, ...])
+assert_type(x_b.shape, tuple[int | None, ...])
+
+# Check Attribute `.size`
+assert_type(x_f32.size, int | None)
+assert_type(x_i32.size, int | None)
+assert_type(x_b.size, int | None)
+
+# Check Attribute `.T`
+assert_type(x_f32.T, xpt.Array[np.dtype[F32]])
+assert_type(x_i32.T, xpt.Array[np.dtype[I32]])
+assert_type(x_b.T, xpt.Array[np.dtype[B]])
