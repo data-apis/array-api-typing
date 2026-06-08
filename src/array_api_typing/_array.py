@@ -4,11 +4,14 @@ __all__ = (
 )
 
 from types import ModuleType
-from typing import Literal, Protocol
+from typing import Literal, Protocol, Self
 from typing_extensions import TypeVar
 
 NamespaceT_co = TypeVar("NamespaceT_co", covariant=True, default=ModuleType)
 DTypeT_co = TypeVar("DTypeT_co", covariant=True)
+DeviceT_co = TypeVar("DeviceT_co", covariant=True, default=object)
+KeyT_contra = TypeVar("KeyT_contra", contravariant=True, default=object)
+ValueT_contra = TypeVar("ValueT_contra", contravariant=True, default=object)
 
 
 class HasArrayNamespace(Protocol[NamespaceT_co]):
@@ -58,6 +61,26 @@ class HasArrayNamespace(Protocol[NamespaceT_co]):
         ...
 
 
+class HasDLPack(Protocol):
+    """Protocol for array classes that support DLPack export."""
+
+    def __dlpack__(
+        self,
+        /,
+        *,
+        stream: object | None = None,
+        max_version: tuple[int, int] | None = None,
+        dl_device: tuple[int, int] | None = None,
+        copy: bool | None = None,
+    ) -> object:
+        """Export the array as a DLPack capsule."""
+        ...
+
+    def __dlpack_device__(self, /) -> tuple[int, int]:
+        """Return the DLPack device type and device ID."""
+        ...
+
+
 class HasDType(Protocol[DTypeT_co]):
     """Protocol for array classes that have a data type attribute."""
 
@@ -67,17 +90,166 @@ class HasDType(Protocol[DTypeT_co]):
         ...
 
 
+class HasDevice(Protocol[DeviceT_co]):
+    """Protocol for array classes that have a device attribute."""
+
+    @property
+    def device(self) -> DeviceT_co:
+        """Hardware device the array data resides on."""
+        ...
+
+
+class HasGetItem(Protocol[KeyT_contra]):
+    """Protocol for array classes that support indexing."""
+
+    def __getitem__(self, key: KeyT_contra, /) -> Self:
+        """Return ``self[key]``."""
+        ...
+
+
+class HasMatrixTranspose(Protocol):
+    """Protocol for array classes that have a matrix transpose attribute."""
+
+    @property
+    def mT(self) -> Self:  # noqa: N802
+        """Transpose of a matrix (or a stack of matrices).
+
+        If an array instance has fewer than two dimensions, an error should be
+        raised.
+
+        Returns:
+            Self: array whose last two dimensions (axes) are permuted in reverse
+                order relative to original array (i.e., for an array instance
+                having shape `(..., M, N)`, the returned array must have shape
+                `(..., N, M))`.  The returned array must have the same data type
+                as the original array.
+
+        """
+        ...
+
+
+class HasNDim(Protocol):
+    """Protocol for array classes that have a number of dimensions attribute."""
+
+    @property
+    def ndim(self) -> int:
+        """Number of array dimensions (axes).
+
+        Returns:
+            int: number of array dimensions (axes).
+
+        """
+        ...
+
+
+class HasShape(Protocol):
+    """Protocol for array classes that have a shape attribute."""
+
+    @property
+    def shape(self) -> tuple[int | None, ...]:
+        """Shape of the array.
+
+        Returns:
+            tuple[int | None, ...]: array dimensions. An array dimension must be None
+                if and only if a dimension is unknown.
+
+        Notes:
+            For array libraries having graph-based computational models, array
+            dimensions may be unknown due to data-dependent operations (e.g.,
+            boolean indexing; `A[:, B > 0]`) and thus cannot be statically
+            resolved without knowing array contents.
+
+        """
+        ...
+
+
+class HasSetItem(Protocol[KeyT_contra, ValueT_contra]):
+    """Protocol for mutable array classes that support indexed assignment."""
+
+    def __setitem__(self, key: KeyT_contra, value: ValueT_contra, /) -> None:
+        """Set ``self[key]`` to ``value``."""
+        ...
+
+
+class HasSize(Protocol):
+    """Protocol for array classes that have a size attribute."""
+
+    @property
+    def size(self) -> int | None:
+        """Number of elements in an array.
+
+        Returns:
+            int | None: number of elements in an array. The returned value must
+                be `None` if and only if one or more array dimensions are
+                unknown.
+
+        Notes:
+            This must equal the product of the array's dimensions.
+
+        """
+        ...
+
+
+class HasToDevice(Protocol):
+    """Protocol for array classes that support device transfer."""
+
+    def to_device(self, device: object, /, *, stream: object | None = None) -> Self:
+        """Copy the array to the specified device."""
+        ...
+
+
+class HasTranspose(Protocol):
+    """Protocol for array classes that support the transpose operation."""
+
+    @property
+    def T(self) -> Self:  # noqa: N802
+        """Transpose of the array.
+
+        The array instance must be two-dimensional. If the array instance is not
+        two-dimensional, an error should be raised.
+
+        Returns:
+            Self: two-dimensional array whose first and last dimensions (axes)
+                are permuted in reverse order relative to original array. The
+                returned array must have the same data type as the original
+                array.
+
+        Notes:
+            Limiting the transpose to two-dimensional arrays (matrices) deviates
+            from the NumPy et al practice of reversing all axes for arrays
+            having more than two-dimensions. This is intentional, as reversing
+            all axes was found to be problematic (e.g., conflicting with the
+            mathematical definition of a transpose which is limited to matrices;
+            not operating on batches of matrices; et cetera). In order to
+            reverse all axes, one is recommended to use the functional
+            `PermuteDims` interface found in this specification.
+
+        """
+        ...
+
+
 class Array(
-    HasArrayNamespace[NamespaceT_co],
     # ------ Attributes -------
+    HasDevice[DeviceT_co],
     HasDType[DTypeT_co],
+    HasMatrixTranspose,
+    HasNDim,
+    HasShape,
+    HasSize,
+    HasTranspose,
+    # ------- Methods ---------
+    HasArrayNamespace[NamespaceT_co],
+    HasDLPack,
+    HasGetItem,
+    HasSetItem,
+    HasToDevice,
     # -------------------------
-    Protocol[DTypeT_co, NamespaceT_co],
+    Protocol[DTypeT_co, NamespaceT_co, DeviceT_co],
 ):
     """Array API specification for array object attributes and methods.
 
-    The type is: ``Array[+DTypeT, +NamespaceT = ModuleType] = Array[DTypeT,
-    NamespaceT]`` where:
+    The type is: ``Array[+DTypeT, +NamespaceT = ModuleType, +DeviceT = object] =
+    Array[DTypeT, NamespaceT, DeviceT]`` where:
 
     - `DTypeT` is the data type of the array elements.
     - `NamespaceT` is the type of the array namespace. It defaults to
@@ -86,6 +258,7 @@ class Array(
       `types.SimpleNamespace`, to allow for wrapper libraries to
       semi-dynamically define their own array namespaces based on the wrapped
       array type.
+    - `DeviceT` is the type of the hardware device the array data resides on.
 
     This type is intended for use in static typing to ensure that an object has
     the attributes and methods defined in the array API specification. It should

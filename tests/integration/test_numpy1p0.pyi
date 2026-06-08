@@ -1,7 +1,7 @@
 # mypy: disable-error-code="no-redef"
 
 from types import ModuleType
-from typing import Any
+from typing import Any, assert_type
 
 import numpy.array_api as np  # type: ignore[import-not-found, unused-ignore]
 from numpy import dtype
@@ -40,6 +40,48 @@ _: xpt.HasDType[dtype[Any]] = nparr_i32
 _: xpt.HasDType[dtype[Any]] = nparr_f32
 
 # =========================================================
+# `xpt.HasDevice`
+
+_: xpt.HasDevice = nparr
+_: xpt.HasDevice = nparr_i32
+_: xpt.HasDevice = nparr_f32
+
+# =========================================================
+# `xpt.HasMatrixTranspose`
+
+_: xpt.HasMatrixTranspose = nparr
+_: xpt.HasMatrixTranspose = nparr_i32
+_: xpt.HasMatrixTranspose = nparr_f32
+
+# =========================================================
+# `xpt.HasNDim`
+
+_: xpt.HasNDim = nparr
+_: xpt.HasNDim = nparr_i32
+_: xpt.HasNDim = nparr_f32
+
+# =========================================================
+# `xpt.HasShape`
+
+_: xpt.HasShape = nparr
+_: xpt.HasShape = nparr_i32
+_: xpt.HasShape = nparr_f32
+
+# =========================================================
+# `xpt.HasShape`
+
+_: xpt.HasShape = nparr
+_: xpt.HasShape = nparr_i32
+_: xpt.HasShape = nparr_f32
+
+# =========================================================
+# `xpt.HasTranspose`
+
+_: xpt.HasTranspose = nparr
+_: xpt.HasTranspose = nparr_i32
+_: xpt.HasTranspose = nparr_f32
+
+# =========================================================
 # `xpt.Array`
 
 # Check NamespaceT_co assignment
@@ -49,5 +91,9 @@ a_ns: xpt.Array[Any, ModuleType] = nparr
 # Note that `np.array_api` uses dtype objects, not dtype classes, so we can't
 # type annotate specific dtypes like `np.float32` or `np.int32`.
 _: xpt.Array[dtype[Any]] = nparr
-_: xpt.Array[dtype[Any]] = nparr_i32
-_: xpt.Array[dtype[Any]] = nparr_f32
+x_f32: xpt.Array[dtype[Any]] = nparr_f32
+x_i32: xpt.Array[dtype[Any]] = nparr_i32
+
+# Check Attribute `.dtype`
+assert_type(x_f32.dtype, dtype[Any])
+assert_type(x_i32.dtype, dtype[Any])
