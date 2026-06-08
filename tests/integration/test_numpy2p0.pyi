@@ -37,6 +37,18 @@ ns: ModuleType = a_ns.__array_namespace__()
 _: xpt.HasArrayNamespace[dict[str, int]] = nparr  # not caught
 
 # =========================================================
+# `xpt.HasDLPack`
+
+_: xpt.HasDLPack = nparr
+_: xpt.HasDLPack = nparr_i32
+_: xpt.HasDLPack = nparr_f32
+_: xpt.HasDLPack = nparr_b
+
+a_dlpack: xpt.HasDLPack = nparr
+assert_type(a_dlpack.__dlpack__(), object)
+assert_type(a_dlpack.__dlpack_device__(), tuple[int, int])
+
+# =========================================================
 # `xpt.HasDType`
 
 # Check DTypeT_co assignment
@@ -52,6 +64,14 @@ _: xpt.HasDevice = nparr
 _: xpt.HasDevice = nparr_i32
 _: xpt.HasDevice = nparr_f32
 _: xpt.HasDevice = nparr_b
+
+# =========================================================
+# `xpt.HasGetItem`
+
+_: xpt.HasGetItem = nparr
+_: xpt.HasGetItem = nparr_i32
+_: xpt.HasGetItem = nparr_f32
+_: xpt.HasGetItem = nparr_b
 
 # =========================================================
 # `xpt.HasMatrixTranspose`
@@ -78,12 +98,28 @@ _: xpt.HasShape = nparr_f32
 _: xpt.HasShape = nparr_b
 
 # =========================================================
+# `xpt.HasSetItem`
+
+_: xpt.HasSetItem = nparr
+_: xpt.HasSetItem = nparr_i32
+_: xpt.HasSetItem = nparr_f32
+_: xpt.HasSetItem = nparr_b
+
+# =========================================================
 # `xpt.HasSize`
 
 _: xpt.HasSize = nparr
 _: xpt.HasSize = nparr_i32
 _: xpt.HasSize = nparr_f32
 _: xpt.HasSize = nparr_b
+
+# =========================================================
+# `xpt.HasToDevice`
+
+_: xpt.HasToDevice = nparr
+_: xpt.HasToDevice = nparr_i32
+_: xpt.HasToDevice = nparr_f32
+_: xpt.HasToDevice = nparr_b
 
 # =========================================================
 # `xpt.HasTranspose`

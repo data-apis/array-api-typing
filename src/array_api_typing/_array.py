@@ -1,13 +1,6 @@
 __all__ = (
     "Array",
     "HasArrayNamespace",
-    "HasDType",
-    "HasDevice",
-    "HasMatrixTranspose",
-    "HasNDim",
-    "HasShape",
-    "HasSize",
-    "HasTranspose",
 )
 
 from types import ModuleType
@@ -17,6 +10,8 @@ from typing_extensions import TypeVar
 NamespaceT_co = TypeVar("NamespaceT_co", covariant=True, default=ModuleType)
 DTypeT_co = TypeVar("DTypeT_co", covariant=True)
 DeviceT_co = TypeVar("DeviceT_co", covariant=True, default=object)
+KeyT_contra = TypeVar("KeyT_contra", contravariant=True, default=object)
+ValueT_contra = TypeVar("ValueT_contra", contravariant=True, default=object)
 
 
 class HasArrayNamespace(Protocol[NamespaceT_co]):
@@ -66,6 +61,26 @@ class HasArrayNamespace(Protocol[NamespaceT_co]):
         ...
 
 
+class HasDLPack(Protocol):
+    """Protocol for array classes that support DLPack export."""
+
+    def __dlpack__(
+        self,
+        /,
+        *,
+        stream: object | None = None,
+        max_version: tuple[int, int] | None = None,
+        dl_device: tuple[int, int] | None = None,
+        copy: bool | None = None,
+    ) -> object:
+        """Export the array as a DLPack capsule."""
+        ...
+
+    def __dlpack_device__(self, /) -> tuple[int, int]:
+        """Return the DLPack device type and device ID."""
+        ...
+
+
 class HasDType(Protocol[DTypeT_co]):
     """Protocol for array classes that have a data type attribute."""
 
@@ -81,6 +96,14 @@ class HasDevice(Protocol[DeviceT_co]):
     @property
     def device(self) -> DeviceT_co:
         """Hardware device the array data resides on."""
+        ...
+
+
+class HasGetItem(Protocol[KeyT_contra]):
+    """Protocol for array classes that support indexing."""
+
+    def __getitem__(self, key: KeyT_contra, /) -> Self:
+        """Return ``self[key]``."""
         ...
 
 
@@ -140,6 +163,14 @@ class HasShape(Protocol):
         ...
 
 
+class HasSetItem(Protocol[KeyT_contra, ValueT_contra]):
+    """Protocol for mutable array classes that support indexed assignment."""
+
+    def __setitem__(self, key: KeyT_contra, value: ValueT_contra, /) -> None:
+        """Set ``self[key]`` to ``value``."""
+        ...
+
+
 class HasSize(Protocol):
     """Protocol for array classes that have a size attribute."""
 
@@ -156,6 +187,14 @@ class HasSize(Protocol):
             This must equal the product of the array's dimensions.
 
         """
+        ...
+
+
+class HasToDevice(Protocol):
+    """Protocol for array classes that support device transfer."""
+
+    def to_device(self, device: object, /, *, stream: object | None = None) -> Self:
+        """Copy the array to the specified device."""
         ...
 
 
@@ -191,16 +230,26 @@ class HasTranspose(Protocol):
 
 class Array(
     # ------ Attributes -------
+    HasDevice[DeviceT_co],
     HasDType[DTypeT_co],
+    HasMatrixTranspose,
+    HasNDim,
+    HasShape,
+    HasSize,
+    HasTranspose,
     # ------- Methods ---------
     HasArrayNamespace[NamespaceT_co],
+    HasDLPack,
+    HasGetItem,
+    HasSetItem,
+    HasToDevice,
     # -------------------------
-    Protocol[DTypeT_co, NamespaceT_co],
+    Protocol[DTypeT_co, NamespaceT_co, DeviceT_co],
 ):
     """Array API specification for array object attributes and methods.
 
-    The type is: ``Array[+DTypeT, +NamespaceT = ModuleType] = Array[DTypeT,
-    NamespaceT]`` where:
+    The type is: ``Array[+DTypeT, +NamespaceT = ModuleType, +DeviceT = object] =
+    Array[DTypeT, NamespaceT, DeviceT]`` where:
 
     - `DTypeT` is the data type of the array elements.
     - `NamespaceT` is the type of the array namespace. It defaults to
@@ -209,6 +258,7 @@ class Array(
       `types.SimpleNamespace`, to allow for wrapper libraries to
       semi-dynamically define their own array namespaces based on the wrapped
       array type.
+    - `DeviceT` is the type of the hardware device the array data resides on.
 
     This type is intended for use in static typing to ensure that an object has
     the attributes and methods defined in the array API specification. It should
