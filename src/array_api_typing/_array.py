@@ -76,6 +76,8 @@ class Array(
 ):
     """Array API specification for array object attributes and methods.
 
+    See the Array API specification: https://data-apis.org/array-api/latest/
+
     The type is: ``Array[+DTypeT, +NamespaceT = ModuleType] = Array[DTypeT,
     NamespaceT]`` where:
 
