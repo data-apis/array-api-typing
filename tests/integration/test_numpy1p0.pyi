@@ -22,8 +22,8 @@ _: xpt.HasArrayNamespace[ModuleType] = nparr_i32
 _: xpt.HasArrayNamespace[ModuleType] = nparr_f32
 
 # Check `__array_namespace__` method
-a_ns: xpt.HasArrayNamespace[ModuleType] = nparr
-ns: ModuleType = a_ns.__array_namespace__()
+has_ns: xpt.HasArrayNamespace[ModuleType] = nparr
+ns: ModuleType = has_ns.__array_namespace__()
 
 # Incorrect values are caught when using `__array_namespace__` and
 # backpropagated to the type of `a_ns`
@@ -43,7 +43,7 @@ _: xpt.HasDType[dtype[Any]] = nparr_f32
 # `xpt.Array`
 
 # Check NamespaceT_co assignment
-a_ns: xpt.Array[Any, ModuleType] = nparr
+_: xpt.Array[Any, ModuleType] = nparr
 
 # Check DTypeT_co assignment
 # Note that `np.array_api` uses dtype objects, not dtype classes, so we can't
