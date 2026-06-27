@@ -1,7 +1,7 @@
 # mypy: disable-error-code="no-redef"
 
 from types import ModuleType
-from typing import Any, TypeAlias
+from typing import Any, TypeAlias, assert_type
 
 import numpy as np
 import numpy.typing as npt
@@ -11,12 +11,13 @@ import array_api_typing as xpt
 # DType aliases
 F32: TypeAlias = np.float32
 I32: TypeAlias = np.int32
+B: TypeAlias = np.bool_
 
 # Define NDArrays against which we can test the protocols
 nparr: npt.NDArray[Any]
 nparr_i32: npt.NDArray[I32]
 nparr_f32: npt.NDArray[F32]
-nparr_b: npt.NDArray[np.bool_]
+nparr_b: npt.NDArray[B]
 
 # =========================================================
 # `xpt.HasArrayNamespace`
@@ -42,7 +43,55 @@ _: xpt.HasArrayNamespace[dict[str, int]] = nparr  # not caught
 _: xpt.HasDType[Any] = nparr
 _: xpt.HasDType[np.dtype[I32]] = nparr_i32
 _: xpt.HasDType[np.dtype[F32]] = nparr_f32
-_: xpt.HasDType[np.dtype[np.bool_]] = nparr_b
+_: xpt.HasDType[np.dtype[B]] = nparr_b
+
+# =========================================================
+# `xpt.HasDevice`
+
+_: xpt.HasDevice = nparr
+_: xpt.HasDevice = nparr_i32
+_: xpt.HasDevice = nparr_f32
+_: xpt.HasDevice = nparr_b
+
+# =========================================================
+# `xpt.HasMatrixTranspose`
+
+_: xpt.HasMatrixTranspose = nparr
+_: xpt.HasMatrixTranspose = nparr_i32
+_: xpt.HasMatrixTranspose = nparr_f32
+_: xpt.HasMatrixTranspose = nparr_b
+
+# =========================================================
+# `xpt.HasNDim`
+
+_: xpt.HasNDim = nparr
+_: xpt.HasNDim = nparr_i32
+_: xpt.HasNDim = nparr_f32
+_: xpt.HasNDim = nparr_b
+
+# =========================================================
+# `xpt.HasShape`
+
+_: xpt.HasShape = nparr
+_: xpt.HasShape = nparr_i32
+_: xpt.HasShape = nparr_f32
+_: xpt.HasShape = nparr_b
+
+# =========================================================
+# `xpt.HasSize`
+
+_: xpt.HasSize = nparr
+_: xpt.HasSize = nparr_i32
+_: xpt.HasSize = nparr_f32
+_: xpt.HasSize = nparr_b
+
+# =========================================================
+# `xpt.HasTranspose`
+
+_: xpt.HasTranspose = nparr
+_: xpt.HasTranspose = nparr_i32
+_: xpt.HasTranspose = nparr_f32
+_: xpt.HasTranspose = nparr_b
 
 # =========================================================
 # `xpt.Array`
@@ -52,6 +101,11 @@ a_ns: xpt.Array[Any, ModuleType] = nparr
 
 # Check DTypeT_co assignment
 _: xpt.Array[Any] = nparr
-_: xpt.Array[np.dtype[I32]] = nparr_i32
-_: xpt.Array[np.dtype[F32]] = nparr_f32
-_: xpt.Array[np.dtype[np.bool_]] = nparr_b
+x_f32: xpt.Array[np.dtype[F32]] = nparr_f32
+x_i32: xpt.Array[np.dtype[I32]] = nparr_i32
+x_b: xpt.Array[np.dtype[B]] = nparr_b
+
+# Check Attribute `.dtype`
+assert_type(x_f32.dtype, np.dtype[F32])
+assert_type(x_i32.dtype, np.dtype[I32])
+assert_type(x_b.dtype, np.dtype[B])
